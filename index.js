@@ -8,6 +8,7 @@ const partiesRoutes = require("./routes/parties");
 const electionRoutes = require("./routes/election");
 const authRoutes = require("./routes/auth");
 const voterRoutes = require("./routes/voter");
+const voteRoutes = require("./routes/vote");
 const path = require("path");
 
 const app = express();
@@ -20,12 +21,14 @@ mongoose.connect(process.env.MONGO_URI, {
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use('/admin', adminRoutes);
 app.use('/json', jsonDataRoutes);
 app.use('/parties', partiesRoutes);
 app.use('/election', electionRoutes);
 app.use('/auth', authRoutes);
 app.use('/voter', voterRoutes);
+app.use('/vote', voteRoutes);
 
 if(process.env.NODE_ENV === "production"){
     app.use(express.static("client/build"));
