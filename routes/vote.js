@@ -14,6 +14,7 @@ router.post("/vote", async (req, res)=>{
         Voters.find({phoneNumber})
         .then(voter => {
             voter = voter[0];
+            response = `Voter's name: ${voter.firstname}`;
         })
         .catch(err => {
             response = CHECK_VOTER_ERROR
