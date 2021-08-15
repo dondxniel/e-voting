@@ -14,4 +14,5 @@ module.exports = {
     INVALID_TOKEN_FORMAT : "Sorry, the format of the supplied token can't be understood.",
     NO_TOKEN : "No authentication/authorization token supplied in the request.",
     REGISTER_VOTER_ERROR : "Sorry, there was an error in registering you as a voter.",
+    CHECK_VOTER_ERROR : "Sorry, an error occured while checking if the number is registered"
 }

@@ -10,6 +10,10 @@ const VotersModel = new Schema({
         type:  String,
         required: true
     },
+    phoneNumber: {
+        type: String,
+        required: true
+    },  
     dob: {
         type:  String,
         required: true

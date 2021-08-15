@@ -1,10 +1,24 @@
 const express = require("express");
 const router = express.Router();
+const Election = require('../models/Election');
+const Voters = require('../models/Voters');
+const { CHECK_VOTER_ERROR } = require("../constants/errorMessages");
 
-router.post("/vote", (req, res)=>{
+router.post("/vote", async (req, res)=>{
     const { sessionId, serviceCode, phoneNumber, text } = req.body;
 
-    let response = `END This is to verify that ${phoneNumber} actually entered a USSD code to access this service.`;
+    let response = "";
+    if(text === ""){
+        phoneNumber = phoneNumber.replace(/+234/, "0");
+        // Check if the a user exists with the phone number.
+        Voters.find({phoneNumber})
+        .then(voter => {
+            voter = voter[0];
+        })
+        .catch(err => {
+            response = CHECK_VOTER_ERROR
+        })
+    }
 
     res.header("Content-type", "text/plain");
     res.end(response);

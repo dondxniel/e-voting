@@ -7,7 +7,7 @@ import { REGISTER_VOTER, FETCH_STATES_ROUTE } from '../../constants/endpoints';
 const RegisterAsVoter = () => {
 
     const [ formData, setFormData ] = useState({
-        firstname: "", lastname: "",
+        firstname: "", lastname: "", phoneNumber: "",
         dob: "", nin: "", nationality: "",
         stateOfOrigin: "", lga: "", ward: "", 
         senetorialDistrict: "", hoaConstituency: "", horConstituency: ""
@@ -37,6 +37,7 @@ const RegisterAsVoter = () => {
         
         if(regExp.test(nin)){
             // do something if only numbers are not found in your string 
+            setFormData(prev => ({...prev, phoneNumber: "09023830868"}));
             setNinVerified(true);
             setNinMessage({
                 variant: true,
