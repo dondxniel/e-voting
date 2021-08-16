@@ -28,7 +28,7 @@ router.post("/vote", async (req, res)=>{
 
     const { sessionId, serviceCode, phoneNumber, text } = req.body;
 
-    let response = `END This is to verify that ${phoneNumber} actually entered a USSD code to access this service.`;
+    let response = `END This is to verify that ${phoneNumber} actually entered a USSD code to access this service. Text is: ${text}`;
 
     res.header("Content-type", "text/plain");
     res.end(response);
