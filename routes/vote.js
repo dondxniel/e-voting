@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Election = require('../models/Election');
 const Voters = require('../models/Voters');
-const { CHECK_VOTER_ERROR } = require("../constants/errorMessages");
+const { CHECK_VOTER_ERROR, NO_VOTER, UNKNOWN_INPUT } = require("../constants/errorMessages");
 
 router.post("/vote", async (req, res)=>{
     const e = "END ";
@@ -19,17 +19,15 @@ router.post("/vote", async (req, res)=>{
                 voter = voter[0];
                 response = `${e}Voter's name: ${voter.firstname} ${voter.lastname}`;
             }else{
-                response = "No voter is registered with this phone number."
+                response = NO_VOTER;
             }
         }catch(err){
             response = CHECK_VOTER_ERROR
         }
     }else{
-        response = "Unknown input.";
+        response = UNKNOWN_INPUT;
     }
-    // console.log(response);
-    // console.log(text);
-
+    
     res.header("Content-type", "text/plain");
     res.end(response);
 })
