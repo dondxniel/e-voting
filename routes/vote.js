@@ -14,7 +14,7 @@ router.post("/vote", async (req, res)=>{
     phoneNumber = phoneNumber.replace("+234", "0");
     if(text === ""){
         try {
-            let voter = await Voters.find({phoneNumber})
+            let voter = await Voters.find({phoneNumber : phoneNumber})
             voter = voter[0];
             response = `${e}Voter's name: ${voter.firstname}`;
         }catch(err){
@@ -23,8 +23,8 @@ router.post("/vote", async (req, res)=>{
     }else{ 
         response = "Unknown input.";
     }
-    console.log(response);
-    console.log(text);
+    // console.log(response);
+    // console.log(text);
 
     res.header("Content-type", "text/plain");
     res.end(response);
