@@ -15,12 +15,16 @@ router.post("/vote", async (req, res)=>{
     if(text === ""){
         try {
             let voter = await Voters.find({phoneNumber : phoneNumber})
-            voter = voter[0];
-            response = `${e}Voter's name: ${voter.firstname}`;
+            if(voter.length > 0){
+                voter = voter[0];
+                response = `${e}Voter's name: ${voter.firstname} ${voter.lastname}`;
+            }else{
+                response = "No voter is registered with this phone number."
+            }
         }catch(err){
             response = CHECK_VOTER_ERROR
         }
-    }else{ 
+    }else{
         response = "Unknown input.";
     }
     // console.log(response);
