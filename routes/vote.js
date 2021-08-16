@@ -9,17 +9,17 @@ router.post("/vote", async (req, res)=>{
     const e = "END ";
     const c = "CON ";
     let response = "";
+    phoneNumber = phoneNumber.replace(/+234/, "0");
     if(text === ""){
-        phoneNumber = phoneNumber.replace(/+234/, "0");
         // Check if the a user exists with the phone number.
-        Voters.find({phoneNumber})
-        .then(voter => {
-            voter = voter[0];
+        // Voters.find({phoneNumber})
+        // .then(voter => {
+        //     voter = voter[0];
             response = `${e}Voter's name: ${voter.firstname}`;
-        })
-        .catch(err => {
-            response = CHECK_VOTER_ERROR
-        })
+        // })
+        // .catch(err => {
+        //     response = CHECK_VOTER_ERROR
+        // })
     }
 
     res.header("Content-type", "text/plain");
