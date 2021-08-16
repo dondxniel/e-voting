@@ -26,10 +26,11 @@ router.post("/vote", async (req, res)=>{
 //     res.end(response);
 //     
 
-    const { sessionId, serviceCode, phoneNumber, text } = req.body;
+    let { sessionId, serviceCode, phoneNumber, text } = req.body;
 
     let response = "";
-    phoneNumber = phoneNumber.replace(/+234/, "0");
+    phoneNumber = phoneNumber.replace("+234", "0");
+    console.log(phoneNumber);
     if(text === ""){
         response = `END This is to verify that ${phoneNumber} actually entered a USSD code to access this service. Text is: ${text}`;
     }
