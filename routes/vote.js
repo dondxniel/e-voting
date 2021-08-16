@@ -12,14 +12,6 @@ router.post("/vote", async (req, res)=>{
 //     phoneNumber = phoneNumber.replace(/+234/, "0");
 //     if(text === ""){
 //         // Check if the a user exists with the phone number.
-//         // Voters.find({phoneNumber})
-//         // .then(voter => {
-//         //     voter = voter[0];
-//             response = `${e}Voter's name: ${voter.firstname}`;
-//         // })
-//         // .catch(err => {
-//         //     response = CHECK_VOTER_ERROR
-//         // })
 //     }
 // 
 //     res.header("Content-type", "text/plain");
@@ -27,12 +19,20 @@ router.post("/vote", async (req, res)=>{
 //     
 
     let { sessionId, serviceCode, phoneNumber, text } = req.body;
-
+    
     let response = "";
     phoneNumber = phoneNumber.replace("+234", "0");
     console.log(phoneNumber);
     if(text === ""){
-        response = `END This is to verify that ${phoneNumber} actually entered a USSD code to access this service. Text is: ${text}`;
+        // response = `END This is to verify that ${phoneNumber} actually entered a USSD code to access this service. Text is: ${text}`;
+        Voters.find({phoneNumber})
+        .then(voter => {
+            voter = voter[0];
+            response = `${e}Voter's name: ${voter.firstname}`;
+        })
+        .catch(err => {
+            response = CHECK_VOTER_ERROR
+        })
     }
 
     res.header("Content-type", "text/plain");
