@@ -15,6 +15,8 @@ module.exports = {
     NO_TOKEN : "No authentication/authorization token supplied in the request.",
     REGISTER_VOTER_ERROR : "Sorry, there was an error in registering you as a voter.",
     CHECK_VOTER_ERROR : "Sorry, an error occured while checking if the number is registered",
-    NO_VOTER : "No voter is registered with this phone number.",
-    UNKNOWN_INPUT : "Sorry, you have entered an unknown input."
+    NO_VOTER: "Sorry, but no voter is registered with this phone number.",
+    UNKNOWN_INPUT: "Sorry, you have entered an unknown input.",
+    NO_ELECTION: "Sorry, no election relating to your state, local government area, ward, district or constituency has been started.",
+    FETCH_ELECTION_ERROR: "Sorry, there was an error in fetching the elections you are supposed to participate in."
 }
