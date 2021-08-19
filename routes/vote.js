@@ -30,7 +30,8 @@ router.post("/vote", async (req, res) => {
                         { $and: [{ electionType: 'governorship' }, { location: voter.stateOfOrigin }] },
                         { $and: [{ electionType: 'hoa' }, { location: voter.hoaConstituency }] },
                         { $and: [{ electionType: 'chairmanship' }, { location: voter.lga }] },
-                        { $and: [{ electionType: 'counsellorship' }, { location: voter.ward }] }
+                        { $and: [{ electionType: 'counsellorship' }, { location: voter.ward }] },
+                        { location: 'all' }
                     ]
                 });
                 // Checking the values entered by the user.
