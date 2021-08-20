@@ -36,18 +36,33 @@ router.post("/vote", async (req, res) => {
                 });
                 // Making sure that the user can only vote for elections that are started by his state's admin officer.
                 elections = elections.filter(item => item.admin.state === voter.stateOfOrigin);
+                // Preparing the text entered by the user for processing
+                text = text.split("*");
+                text = text.map(val => parseInt(val));
                 // Checking the values entered by the user.
-                if (text === "") {
+                if (text.length === 1 && text.includes(null)) {
                     // response = `${e}Voter's name: ${voter.firstname} ${voter.lastname}`;
                     if (elections.length > 0) {
                         response = `${c}Select the election you\'re voting in.\n`;
                         elections.forEach((el, index) => {
                             index = index + 1;
-                            response += `${index}. ${el.electionType}`;
+                            response += `${index}. ${toTitleCase(el.electionType)}`;
                         })
                     } else {
                         response = `${e + NO_ELECTION}`
                     }
+                } else if (text.length === 1 && !text.includes(null)) {
+                    text = text[0];
+                    let election = elections[text - 1];
+                    response = `Select the party you would like to vote for \n`;
+                    election.contestingParties.forEach((item, index) => {
+                        index = index + 1;
+                        response += `${index}. ${item.party.abb} (${item.party.fullname})`;
+                    })
+                } else if (text.length === 2 && !text.includes(null)) {
+                    let election = elections[text[0] - 1];
+                    let candidate = election.contestingParties[text[1] - 1].candidate;
+                    response = `The candidate for the party you're voting for is ${candidate}`;
                 } else {
                     response = `${e + UNKNOWN_INPUT}`;
                 }
@@ -64,8 +79,12 @@ router.post("/vote", async (req, res) => {
     res.header("Content-type", "text/plain");
     res.end(response);
 })
-
+// 
 router.post('/test-vote', async (req, res) => {
+    // let txt = "";
+    // txt = txt.split("*");
+    // txt = txt.map(item => parseInt(item))
+    // res.json({ txtLength: txt.length, txt });
     let phoneNumber = "09023830868";
     try {
         let voter = await Voters.find({ phoneNumber: phoneNumber })
@@ -83,6 +102,7 @@ router.post('/test-vote', async (req, res) => {
                     { location: 'all' }
                 ]
             });
+
             elections = elections.filter(item => item.admin.state === voter.stateOfOrigin);
 
             res.json(elections)
