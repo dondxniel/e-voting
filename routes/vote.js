@@ -41,7 +41,7 @@ router.post("/vote", async (req, res) => {
                     // response = `${e}Voter's name: ${voter.firstname} ${voter.lastname}`;
                     if (elections.length > 0) {
                         response = `${c}Select the election you\'re voting in.\n`;
-                        election.forEach((el, index) => {
+                        elections.forEach((el, index) => {
                             index = index + 1;
                             response += `${index}. ${el.electionType}`;
                         })
