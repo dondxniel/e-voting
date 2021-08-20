@@ -46,7 +46,7 @@ router.post("/vote", async (req, res) => {
                         response = `${c}Select the election you're voting in.\n`;
                         elections.forEach((el, index) => {
                             index = index + 1;
-                            response += `${index}. ${toTitleCase(el.electionType)}`;
+                            response += `${index}. ${toTitleCase(el.electionType)} \n`;
                         })
                     } else {
                         response = `${e + NO_ELECTION}`
@@ -66,7 +66,7 @@ router.post("/vote", async (req, res) => {
                     }
                     contestingParties.forEach((item, index) => {
                         index = index + 1;
-                        response += `${index}. ${item.party.abb} (${item.party.fullname})`;
+                        response += `${index}. ${item.party.abb} (${item.party.fullname}) \n`;
                     })
                 } else if (text.length === 2 && !text.includes(null)) {
                     let election = elections[text[0] - 1];
