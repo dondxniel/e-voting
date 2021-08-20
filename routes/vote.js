@@ -43,7 +43,7 @@ router.post("/vote", async (req, res) => {
                 if (text.length === 1 && text.includes(null)) {
                     // response = `${e}Voter's name: ${voter.firstname} ${voter.lastname}`;
                     if (elections.length > 0) {
-                        response = `${c}Select the election you\'re voting in.\n`;
+                        response = `${c}Select the election you're voting in.\n`;
                         elections.forEach((el, index) => {
                             index = index + 1;
                             response += `${index}. ${toTitleCase(el.electionType)}`;
@@ -55,7 +55,15 @@ router.post("/vote", async (req, res) => {
                     text = text[0];
                     let election = elections[text - 1];
                     response = `Select the party you would like to vote for \n`;
-                    election.contestingParties.forEach((item, index) => {
+                    let contestingParties = [];
+                    try {
+                        contestingParties = election.contestingParties;
+                    } catch (err) {
+                        if (`${err}` !== "TypeError: Cannot read property 'contestingParties' of undefined") {
+                            response = `${err}`;
+                        }
+                    }
+                    contestingParties.forEach((item, index) => {
                         index = index + 1;
                         response += `${index}. ${item.party.abb} (${item.party.fullname})`;
                     })
