@@ -40,7 +40,7 @@ router.post("/vote", async (req, res) => {
                 text = text.split("*");
                 text = text.map(val => parseInt(val));
                 // Checking the values entered by the user.
-                if (text.length === 1 && text.includes(null)) {
+                if (text.length === 1 && (text.includes(null) || text.includes(NaN))) {
                     // response = `${e}Voter's name: ${voter.firstname} ${voter.lastname}`;
                     if (elections.length > 0) {
                         response = `${c}Select the election you're voting in.\n`;
@@ -51,7 +51,8 @@ router.post("/vote", async (req, res) => {
                     } else {
                         response = `${e + NO_ELECTION}`
                     }
-                } else if (text.length === 1 && !text.includes(null)) {
+                } else if (text.length === 1 && !(text.includes(null) || text.includes(NaN))) {
+                    // console.log(text)
                     text = text[0];
                     let election = elections[text - 1];
                     response = `${c}Select the party you would like to vote for \n`;
