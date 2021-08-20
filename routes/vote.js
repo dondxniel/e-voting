@@ -52,13 +52,13 @@ router.post("/vote", async (req, res) => {
                     response = `${e + UNKNOWN_INPUT}`;
                 }
             } catch (err) {
-                response = `${e + FETCH_ELECTION_ERROR}`
+                response = `${e + FETCH_ELECTION_ERROR}. Details: ${err}`
             }
         } else {
             response = `${e + NO_VOTER}`;
         }
     } catch (err) {
-        response = `${e + CHECK_VOTER_ERROR}`
+        response = `${e + CHECK_VOTER_ERROR}. Details: ${err}`
     }
 
     res.header("Content-type", "text/plain");
