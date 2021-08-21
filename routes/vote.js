@@ -120,7 +120,6 @@ router.post("/vote", async (req, res) => {
                                             // resElection = resElection[0];
                                             resElection.contestingParties = contestingParties;
                                             resElection.save();
-                                            // console.log(contestingParties[partyBeingVotedFor]);
                                             response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].party.abb} for the ${toTitleCase(resElection.electionType)} elections.`
                                         }
                                     })
@@ -128,7 +127,7 @@ router.post("/vote", async (req, res) => {
                                     response = `${e}Error while recording your vote. Details: ${err}`;
                                 }
                             } else {
-                                response = `${e}Sorry, but one user can not vote twice.`;
+                                response = `${e}Sorry, but you can not vote twice.`;
                             }
                         } else {
                             response = `${e}Today's date is ${today}, but the election's date is ${election.electionDate}. You can only vote on the election date.`;
