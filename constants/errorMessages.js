@@ -19,5 +19,7 @@ module.exports = {
     UNKNOWN_INPUT: "Sorry, you have entered an unknown input.",
     NO_ELECTION: "Sorry, no election relating to your state, local government area, ward, district or constituency has been started.",
     FETCH_ELECTION_ERROR: "Sorry, there was an error in fetching the elections you are supposed to participate in.",
-    ERROR_FINDING_ELECTION: "Sorry, there was an error finding the election from the database. Please try again."
+    ERROR_FINDING_ELECTION: "Sorry, there was an error finding the election from the database. Please try again.",
+    ADMIN_EXISTS: "Sorry, an admin already exists with this email address.",
+    JU_ALREADY_EXISTS: "Sorry, an admin already exists with the jurisdiction access level you're trying to give the new admin."
 }
