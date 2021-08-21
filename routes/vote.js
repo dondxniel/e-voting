@@ -54,7 +54,12 @@ router.post("/vote", async (req, res) => {
                 } else if (text.length === 1 && !(text.includes(null) || text.includes(NaN))) {
                     // console.log(text)
                     text = text[0];
-                    let election = elections[text - 1];
+                    let election = {};
+                    try {
+                        election = elections[text - 1];
+                    } catch (err) {
+                        response = `${e}Unknown input.`
+                    }
                     // Trying to make sure the voter doesn't try to vote on other days asides the election's date.
                     const date = new Date();
                     const year = date.getFullYear();
@@ -80,7 +85,12 @@ router.post("/vote", async (req, res) => {
                     }
                 } else if (text.length === 2 && !text.includes(null)) {
                     // text = text[0];
-                    let election = elections[text[0] - 1];
+                    let election = {};
+                    try {
+                        election = elections[text[0] - 1];
+                    } catch (err) {
+                        response = `${e}Unknown input.`
+                    }
                     const date = new Date();
                     const year = date.getFullYear();
                     const month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
