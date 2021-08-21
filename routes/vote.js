@@ -82,7 +82,7 @@ router.post("/vote", async (req, res) => {
                             response = `${e}Today's date is ${today}, but the election's date is ${election.electionDate}. You can only vote on the election date.`;
                         }
                     } catch (err) {
-                        response = `${e}Unknown input.`
+                        response = `${e + UNKNOWN_INPUT}`
                     }
                 } else if (text.length === 2 && !text.includes(null)) {
                     // text = text[0];
@@ -106,27 +106,36 @@ router.post("/vote", async (req, res) => {
                                 }
                             }
                             let partyBeingVotedFor = text[1] - 1;
-                            contestingParties[partyBeingVotedFor].votes.push(voter);
-                            try {
-                                await Election.findById(election._id, (err, resElection) => {
-                                    if (err) {
-                                        response = `${e + ERROR_FINDING_ELECTION}`
-                                    } else {
-                                        // resElection = resElection[0];
-                                        resElection.contestingParties = contestingParties;
-                                        resElection.save();
-                                        // console.log(contestingParties[partyBeingVotedFor]);
-                                        response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].party.abb} for the ${toTitleCase(resElection.electionType)} elections.`
-                                    }
-                                })
-                            } catch (err) {
-                                response = `${e}Error while recording your vote. Details: ${err}`;
+                            let votes = contestingParties[partyBeingVotedFor].votes;
+                            // Get a list of all the IDs to make sure that a single voter cannot vote twice.
+                            let ids = votes.map(item => item._id);
+                            // Check if the voter's ID is among the list of voters ids.
+                            if (!ids.includes(voter._id)) {
+                                votes.push(voter);//Add the voter's vote.
+                                try {
+                                    await Election.findById(election._id, (err, resElection) => {
+                                        if (err) {
+                                            response = `${e + ERROR_FINDING_ELECTION}`
+                                        } else {
+                                            // resElection = resElection[0];
+                                            resElection.contestingParties = contestingParties;
+                                            resElection.save();
+                                            // console.log(contestingParties[partyBeingVotedFor]);
+                                            response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].party.abb} for the ${toTitleCase(resElection.electionType)} elections.`
+                                        }
+                                    })
+                                } catch (err) {
+                                    response = `${e}Error while recording your vote. Details: ${err}`;
+                                }
+                            } else {
+                                response = `${e}Sorry, but one user can not vote twice.`;
                             }
                         } else {
                             response = `${e}Today's date is ${today}, but the election's date is ${election.electionDate}. You can only vote on the election date.`;
                         }
                     } catch (err) {
-                        response = `${e}Unknown input.`
+                        response = `${e + UNKNOWN_INPUT}`;
+
                     }
                 } else {
                     response = `${e + UNKNOWN_INPUT}`;
