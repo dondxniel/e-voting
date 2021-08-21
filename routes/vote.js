@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Election = require('../models/Election');
 const Voters = require('../models/Voters');
-const { CHECK_VOTER_ERROR, NO_VOTER, UNKNOWN_INPUT, NO_ELECTION, FETCH_ELECTION_ERROR } = require("../constants/errorMessages");
+const { CHECK_VOTER_ERROR, NO_VOTER, UNKNOWN_INPUT, NO_ELECTION, FETCH_ELECTION_ERROR, ERROR_FINDING_ELECTION } = require("../constants/errorMessages");
 const toTitleCase = require('../functions/toTitleCase');
 
 router.post("/vote", async (req, res) => {
@@ -69,9 +69,35 @@ router.post("/vote", async (req, res) => {
                         response += `${index}. ${item.party.abb} (${item.party.fullname}) \n`;
                     })
                 } else if (text.length === 2 && !text.includes(null)) {
-                    let election = elections[text[0] - 1];
-                    let candidate = election.contestingParties[text[1] - 1].candidate;
-                    response = `${e}The candidate for the party you're voting for is ${candidate}`;
+                    text = text[0];
+                    let election = elections[text - 1];
+                    // response = `${c}Select the party you would like to vote for \n`;
+                    let contestingParties = [];
+                    try {
+                        contestingParties = election.contestingParties;
+                    } catch (err) {
+                        if (`${err}` !== "TypeError: Cannot read property 'contestingParties' of undefined") {
+                            response = `${e + err}`;
+                        }
+                    }
+                    let partyBeingVotedFor = text[1] - 1;
+                    contestingParties[partyBeingVotedFor].votes.push(voter);
+                    try {
+                        await Election.find({ id: election._id }, (err, election) => {
+                            if (err) {
+                                response = `${e + ERROR_FINDING_ELECTION}`
+                            } else {
+                                election.contestingParties = contestingParties;
+                                election.save();
+                                response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].abb} for the ${toTitleCase(election.electionType)} elections.`
+                            }
+                        })
+                    } catch (err) {
+
+                    }
+                    // let election = elections[text[0] - 1];
+                    // let candidate = election.contestingParties[text[1] - 1].candidate;
+                    // response = `${e}The candidate for the party you're voting for is ${candidate}`;
                 } else {
                     response = `${e + UNKNOWN_INPUT}`;
                 }

@@ -18,5 +18,6 @@ module.exports = {
     NO_VOTER: "Sorry, but no voter is registered with this phone number.",
     UNKNOWN_INPUT: "Sorry, you have entered an unknown input.",
     NO_ELECTION: "Sorry, no election relating to your state, local government area, ward, district or constituency has been started.",
-    FETCH_ELECTION_ERROR: "Sorry, there was an error in fetching the elections you are supposed to participate in."
+    FETCH_ELECTION_ERROR: "Sorry, there was an error in fetching the elections you are supposed to participate in.",
+    ERROR_FINDING_ELECTION: "Sorry, there was an error finding the election from the database. Please try again."
 }
