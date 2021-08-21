@@ -24,7 +24,7 @@ router.post('/create-admin', checkAdminExistence, auth, (req, res) => {
                     res.json({
                         success: false,
                         data: err,
-                        message: SAVE_ADMIN_ERROR
+                        message: JU_ALREADY_EXISTS
                     })
                 } else {
                     newAdmin.save()
