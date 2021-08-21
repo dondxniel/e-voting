@@ -69,8 +69,8 @@ router.post("/vote", async (req, res) => {
                         response += `${index}. ${item.party.abb} (${item.party.fullname}) \n`;
                     })
                 } else if (text.length === 2 && !text.includes(null)) {
-                    text = text[0];
-                    let election = elections[text - 1];
+                    // text = text[0];
+                    let election = elections[text[0] - 1];
                     // response = `${c}Select the party you would like to vote for \n`;
                     let contestingParties = [];
                     try {
@@ -81,23 +81,25 @@ router.post("/vote", async (req, res) => {
                         }
                     }
                     let partyBeingVotedFor = text[1] - 1;
+                    // console.log(contestingParties[partyBeingVotedFor])
+                    // console.log(partyBeingVotedFor)
+                    // console.log(text)
                     contestingParties[partyBeingVotedFor].votes.push(voter);
                     try {
-                        await Election.find({ id: election._id }, (err, election) => {
+                        await Election.findById(election._id, (err, resElection) => {
                             if (err) {
                                 response = `${e + ERROR_FINDING_ELECTION}`
                             } else {
-                                election.contestingParties = contestingParties;
-                                election.save();
-                                response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].abb} for the ${toTitleCase(election.electionType)} elections.`
+                                // resElection = resElection[0];
+                                resElection.contestingParties = contestingParties;
+                                resElection.save();
+                                // console.log(contestingParties[partyBeingVotedFor]);
+                                response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].party.abb} for the ${toTitleCase(resElection.electionType)} elections.`
                             }
                         })
                     } catch (err) {
-
+                        response = `${e}Error while recording your vote. Details: ${err}`;
                     }
-                    // let election = elections[text[0] - 1];
-                    // let candidate = election.contestingParties[text[1] - 1].candidate;
-                    // response = `${e}The candidate for the party you're voting for is ${candidate}`;
                 } else {
                     response = `${e + UNKNOWN_INPUT}`;
                 }
