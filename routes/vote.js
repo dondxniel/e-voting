@@ -55,50 +55,65 @@ router.post("/vote", async (req, res) => {
                     // console.log(text)
                     text = text[0];
                     let election = elections[text - 1];
-                    response = `${c}Select the party you would like to vote for \n`;
-                    let contestingParties = [];
-                    try {
-                        contestingParties = election.contestingParties;
-                    } catch (err) {
-                        if (`${err}` !== "TypeError: Cannot read property 'contestingParties' of undefined") {
-                            response = `${e + err}`;
+                    // Trying to make sure the voter doesn't try to vote on other days asides the election's date.
+                    const date = new Date();
+                    const year = date.getFullYear();
+                    const month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+                    const day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
+                    const today = `${year}-${month}-${day}`;
+                    if (today === election.electionDate) {
+                        response = `${c}Select the party you would like to vote for \n`;
+                        let contestingParties = [];
+                        try {
+                            contestingParties = election.contestingParties;
+                        } catch (err) {
+                            if (`${err}` !== "TypeError: Cannot read property 'contestingParties' of undefined") {
+                                response = `${e + err}`;
+                            }
                         }
+                        contestingParties.forEach((item, index) => {
+                            index = index + 1;
+                            response += `${index}. ${item.party.abb} (${item.party.fullname}) \n`;
+                        })
+                    } else {
+                        response = `${e}Today's date is ${today}, but the election's date is ${election.electionDate}. You can only vote on the election date.`;
                     }
-                    contestingParties.forEach((item, index) => {
-                        index = index + 1;
-                        response += `${index}. ${item.party.abb} (${item.party.fullname}) \n`;
-                    })
                 } else if (text.length === 2 && !text.includes(null)) {
                     // text = text[0];
                     let election = elections[text[0] - 1];
-                    // response = `${c}Select the party you would like to vote for \n`;
-                    let contestingParties = [];
-                    try {
-                        contestingParties = election.contestingParties;
-                    } catch (err) {
-                        if (`${err}` !== "TypeError: Cannot read property 'contestingParties' of undefined") {
-                            response = `${e + err}`;
-                        }
-                    }
-                    let partyBeingVotedFor = text[1] - 1;
-                    // console.log(contestingParties[partyBeingVotedFor])
-                    // console.log(partyBeingVotedFor)
-                    // console.log(text)
-                    contestingParties[partyBeingVotedFor].votes.push(voter);
-                    try {
-                        await Election.findById(election._id, (err, resElection) => {
-                            if (err) {
-                                response = `${e + ERROR_FINDING_ELECTION}`
-                            } else {
-                                // resElection = resElection[0];
-                                resElection.contestingParties = contestingParties;
-                                resElection.save();
-                                // console.log(contestingParties[partyBeingVotedFor]);
-                                response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].party.abb} for the ${toTitleCase(resElection.electionType)} elections.`
+                    const date = new Date();
+                    const year = date.getFullYear();
+                    const month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+                    const day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
+                    const today = `${year}-${month}-${day}`;
+                    if (today === election.electionDate) {
+                        let contestingParties = [];
+                        try {
+                            contestingParties = election.contestingParties;
+                        } catch (err) {
+                            if (`${err}` !== "TypeError: Cannot read property 'contestingParties' of undefined") {
+                                response = `${e + err}`;
                             }
-                        })
-                    } catch (err) {
-                        response = `${e}Error while recording your vote. Details: ${err}`;
+                        }
+                        let partyBeingVotedFor = text[1] - 1;
+                        contestingParties[partyBeingVotedFor].votes.push(voter);
+                        try {
+                            await Election.findById(election._id, (err, resElection) => {
+                                if (err) {
+                                    response = `${e + ERROR_FINDING_ELECTION}`
+                                } else {
+                                    // resElection = resElection[0];
+                                    resElection.contestingParties = contestingParties;
+                                    resElection.save();
+                                    // console.log(contestingParties[partyBeingVotedFor]);
+                                    response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].party.abb} for the ${toTitleCase(resElection.electionType)} elections.`
+                                }
+                            })
+                        } catch (err) {
+                            response = `${e}Error while recording your vote. Details: ${err}`;
+                        }
+                    } else {
+                        response = `${e}Today's date is ${today}, but the election's date is ${election.electionDate}. You can only vote on the election date.`;
                     }
                 } else {
                     response = `${e + UNKNOWN_INPUT}`;
