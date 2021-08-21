@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth")
 const Admins = require("../models/Admins");
-const checkAdminExitence = require("../middleware/checkAdminExistence");
+const checkAdminExistence = require("../middleware/checkAdminExistence");
 const { SAVE_ADMIN_ERROR, FETCH_ADMINS_ERROR, ADMIN_EXISTS, JU_ALREADY_EXISTS } = require('../constants/errorMessages');
 const { SAVE_ADMIN_SUCCESS, FETCH_ADMINS_SUCCESS } = require('../constants/successMessages');
 
