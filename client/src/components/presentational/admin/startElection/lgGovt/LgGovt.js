@@ -68,7 +68,7 @@ const LgGovt = ({startElection}) => {
             }else{
                 setMessage({
                     variant: 'failure',
-                    message: `${data.message}-${data.data.message}`
+                    message: `${data.message}`
                 })
             }
             resetFormData();

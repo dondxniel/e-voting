@@ -23,36 +23,91 @@ const RegisterAsVoter = () => {
     const [ ninVerified, setNinVerified ] = useState(false);
     const [ ninEntered, setNinEntered ] = useState(false);
     const [ ninMessage, setNinMessage ] = useState(false);
+    const [phoneNumberVerified, setPhoneNumberVerified] = useState(null);
+    const [phoneNumberMessage, setPhoneNumberMessage] = useState(false);
 
     const resetState = () => {
         setFormData({
-            firstname: "", lastname: "", dob: "", nin: "", nationality: "", stateOfOrigin: "", lga: "", ward: "", senetorialDistrict: "", hoaConstituency: "", horConstituency: ""
+            firstname: "", lastname: "", phoneNumber: "", dob: "", nin: "", nationality: "", stateOfOrigin: "", lga: "", ward: "", senetorialDistrict: "", hoaConstituency: "", horConstituency: ""
         })
     }
 
     const verifyNin = e => {
         let nin = e.target.value.trim();
-        // var regExp = /[a-zA-Z]/g; //Checking for letters
-        var regExp = /^\d+$/;
-        
-        if(regExp.test(nin)){
-            // do something if only numbers are not found in your string 
-            setFormData(prev => ({...prev, phoneNumber: "09023830868"}));
-            setNinVerified(true);
-            setNinMessage({
-                variant: true,
-                message: "NIN valid."
-            })
-        } else {
-            //do something if letters or special characters are found in your string 
-            setNinVerified(false);
-            setNinMessage({
-                variant: false,
-                message: "You are only allowed to enter numbers as part of your NIN."
-            })
+        if (nin !== "") {
+            // var regExp = /[a-zA-Z]/g; //Checking for letters
+            var regExp = /^\d+$/;
+
+            if (regExp.test(nin)) {
+                // do something if only numbers are not found in your string 
+                setFormData(prev => ({ ...prev, phoneNumber: "09023830868" }));
+                setNinVerified(true);
+                setNinMessage({
+                    variant: true,
+                    message: "NIN valid."
+                })
+                setPhoneNumberMessage({
+                    variant: false,
+                    message: "Note that this is the only number you can use to vote and it was automatically fetched from your NIN registration data. Edit it if you don't have access to this sim anymore."
+                })
+            } else {
+                //do something if letters or special characters are found in your string 
+                setNinVerified(false);
+                setNinMessage({
+                    variant: false,
+                    message: "You are only allowed to enter numbers as part of your NIN."
+                })
+            }
         }
     }
-    
+
+    const verifyPhoneNumber = e => {
+        let number = e.target.value.trim();
+
+        if (number !== "") {
+            number = number.split("");
+            if (number[0] !== "0" && (`${number[0]}${number[1]}${number[2]}${number[3]}` !== "+234")) {
+                //do something if the first character is not "0" and the first 4 characters is not "+234"
+                setPhoneNumberVerified(false);
+                setPhoneNumberMessage({
+                    variant: false,
+                    message: "Your number is not understood by our system. Please make sure it either starts with a '0' or '+234'."
+                })
+            } else {
+                if ((number[0] === "0" && number.length !== 11) || (`${number[0]}${number[1]}${number[2]}${number[3]}` === "+234" && number.length !== 14)) {
+                    //do something if the first character is "0" but the characters count is not equals to 11 or the first 4 characters is "+234" and the characters count is not equals to 14
+                    setPhoneNumberVerified(false);
+                    setPhoneNumberMessage({
+                        variant: false,
+                        message: "Your number is not understood by our system. If it starts with '0', please make sure it is 11 characters. If it starts with '+234' please make sure it is 14 characters."
+                    })
+                } else {
+                    // do something if the phone number passes all the checks.
+                    number = number.join("");
+                    // var regExp = /[a-zA-Z]/g; //Checking for letters
+                    // var regExp = /^\d+$/; //Checking for numbers
+                    var regExp = /^[\d\+]+$/
+                    if (regExp.test(number)) {
+                        // do something if only numbers are not found in your string 
+                        setPhoneNumberVerified(true);
+                        setPhoneNumberMessage({
+                            variant: true,
+                            message: "Phone number valid."
+                        })
+                    } else {
+                        //do something if letters or special characters are found in your string 
+                        setPhoneNumberVerified(false);
+                        setPhoneNumberMessage({
+                            variant: false,
+                            message: "You are only allowed to enter numbers and '+' sign as part of your phone number."
+                        })
+                    }
+                }
+            }
+        }
+
+    }
+
     const setLga = e => {
         let lgaVal = e.target.value.trim();
         setFormData(prev => ({ ...prev, lga: lgaVal }));
@@ -68,6 +123,7 @@ const RegisterAsVoter = () => {
     }
     const setFirstname = e => setFormData(prev => ({ ...prev, firstname: e.target.value.trim() }))
     const setLastname = e => setFormData(prev => ({ ...prev, lastname: e.target.value.trim() }))
+    const setPhoneNumber = e => setFormData(prev => ({ ...prev, phoneNumber: e.target.value.trim() }))
     const setDob = e => setFormData(prev => ({ ...prev, dob: e.target.value.trim() }))
     const setNationality = e => setFormData(prev => ({ ...prev, nationality: e.target.value.trim() }))
     const setStateOfOrigin = e => setFormData(prev => ({ ...prev, stateOfOrigin: e.target.value.trim() }))
@@ -194,6 +250,15 @@ const RegisterAsVoter = () => {
                             </Form.Text>}
                         </Form.Group>
                         <Form.Group className = "my-3">
+                            <Form.Label>Phone Number</Form.Label>
+                            <Form.Control value={formData.phoneNumber} className={(phoneNumberVerified !== null) ? (phoneNumberVerified ? "border-success" : "border-danger") : ""} onBlur={verifyPhoneNumber} onChange={setPhoneNumber} type="text" placeholder="Enter the phone number you're currently using." />
+                            {phoneNumberMessage && <Form.Text >
+                                <div className={`${phoneNumberMessage.variant}?"text-success":"text-danger"`}>
+                                    {phoneNumberMessage.message}
+                                </div>
+                            </Form.Text>}
+                        </Form.Group>
+                        <Form.Group className="my-3">
                             <Form.Label>Nationality</Form.Label>
                             <Form.Control value = {formData.nationality} as = "select" onChange = {setNationality} className = "form-control">
                                 <option value = "">--Select Country--</option>
@@ -243,7 +308,7 @@ const RegisterAsVoter = () => {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group className = "my-3 text-center">
-                            <Button type = "submit" variant = "default" className = "border" disabled = {(loading || !(ninEntered && ninVerified))} >
+                            <Button type="submit" variant="default" className="border" disabled={(loading || !(ninEntered && ninVerified && phoneNumberVerified))} >
                                 {loading?
                                     <Loading variant = "sm" />
                                 :

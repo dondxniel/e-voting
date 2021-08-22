@@ -40,8 +40,8 @@ router.post('/create-admin', checkAdminExistence, auth, (req, res) => {
                                 success: false,
                                 data: err,
                                 message: SAVE_ADMIN_ERROR
+                            })
                         })
-                    })
                 }
             }
         })
