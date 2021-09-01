@@ -6,7 +6,7 @@ import Senetorial from './presentational/Senetorial';
 import HouseOfRepresentative from './presentational/HouseOfRepresentative';
 import Statistics from '../presentational/Statistics';
 
-const StateElectionsModal = () => {
+const StateElectionsModal = ({ result }) => {
 
     const [ show, setShow ] = useState(false);
     

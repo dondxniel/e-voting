@@ -23,5 +23,5 @@ module.exports = {
     ADMIN_EXISTS: "Sorry, an admin already exists with this email address.",
     JU_ALREADY_EXISTS: "Sorry, an admin already exists with the jurisdiction access level you're trying to give the new admin.",
     INAPPROPRIATE_ELECTION_TIMING: "All previously started elections have to be completely over before a new one can start. Please adjust the date of the new election to be started.",
-
+    FETCH_ELECTION_ERROR: "Sorry, there was an error in fetching the election results.",
 }

@@ -1,6 +1,12 @@
+import { useEffect } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 
-const Charimanship = ({children}) => {
+const Charimanship = ({ children, data }) => {
+
+    useEffect(() => {
+        console.log(data);
+    }, [])
+
     return (
         <Container>
             <Row>
@@ -10,9 +16,7 @@ const Charimanship = ({children}) => {
                             <Form.Label><b>Select Local Government</b></Form.Label>
                             <select className = "form-control">
                                 <option>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                {/* {data.location.map(item => <option value={item}>{item}</option>)} */}
                             </select>
                             <hr />
                             <Container>

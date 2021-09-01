@@ -1,13 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Button, Tabs, Tab, Container, Row } from 'react-bootstrap';
 import { FaPrint } from 'react-icons/fa';
 import Chairmanship from './presentational/Chairmanship';
 import Counsellorship from './presentational/Counsellorship';
 import Statistics from '../presentational/Statistics';
 
-const LgElectionsModal = () => {
+const LgElectionsModal = ({ result }) => {
 
     const [ show, setShow ] = useState(false);
+    const [chairmanship, setChairmanship] = useState({});
+    const [counsellorship, setCounsellorship] = useState({});
+
+    const setData = () => {
+        let chair = result.filter(item => item.electionType === 'chairmanship');
+        let counsel = result.filter(item => item.electionType === 'counsellorship');
+
+        setChairmanship(chair[0]);
+        setCounsellorship(counsel[0]);
+        console.log(chairmanship);
+        console.log(counsellorship);
+    }
+
+    const setCharimanshipData = e => {
+        let val = e.target.value;
+
+    }
+
+    useEffect(() => {
+        setData();
+    }, [])
     
     return (
         <>
@@ -31,13 +52,13 @@ const LgElectionsModal = () => {
                         <Row>
                             <Tabs defaultActiveKey="chairmanship" id="uncontrolled-tab-example" className="mb-3 text-center justify-content-center">
                                 <Tab eventKey="chairmanship" title="Chairmanship">
-                                    <Chairmanship>
-                                        <Statistics />
+                                    <Chairmanship data={chairmanship}>
+                                        <Statistics data={chairmanship} />
                                     </Chairmanship>
                                 </Tab>
                                 <Tab eventKey="counsellorship" title="Counsellorship">
-                                    <Counsellorship>
-                                        <Statistics />
+                                    <Counsellorship data={counsellorship}>
+                                        <Statistics data={counsellorship} />
                                     </Counsellorship>
                                 </Tab>
                             </Tabs>

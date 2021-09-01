@@ -8,3 +8,4 @@ export const FETCH_PARTIES_ROUTE = `${backend}/parties/fetch-parties/`;
 export const START_ELECTION_ROUTE = `${backend}/election/start-election/`;
 export const LOGIN_ROUTE = `${backend}/auth/login/`;
 export const REGISTER_VOTER = `${backend}/voter/register-voter/`;
+export const FETCH_ELECTION_STATS = `${backend}/election/fetch-election-stats/`;

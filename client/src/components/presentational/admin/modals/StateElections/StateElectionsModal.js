@@ -5,7 +5,7 @@ import Governorship from './presentational/Governorship';
 import HouseOfAssembly from './presentational/HouseOfAssembly';
 import Statistics from '../presentational/Statistics';
 
-const StateElectionsModal = () => {
+const StateElectionsModal = ({ result }) => {
 
     const [ show, setShow ] = useState(false);
     
