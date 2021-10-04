@@ -6,29 +6,29 @@ import { REGISTER_VOTER, FETCH_STATES_ROUTE } from '../../constants/endpoints';
 
 const RegisterAsVoter = () => {
 
-    const [ formData, setFormData ] = useState({
-        firstname: "", lastname: "", phoneNumber: "",
+    const [formData, setFormData] = useState({
+        firstname: "", lastname: "", gender: "", phoneNumber: "",
         dob: "", nin: "", nationality: "",
-        stateOfOrigin: "", lga: "", ward: "", 
+        stateOfOrigin: "", lga: "", ward: "",
         senetorialDistrict: "", hoaConstituency: "", horConstituency: ""
     })
-    const [ lgas, setLgas ] = useState([]);
-    const [ wards, setWards ] = useState([]);
-    const [ hoaConstituencies, setHoaConstituencies ] = useState([]);
-    const [ horConstituencies, setHorConstituencies ] = useState([]);
-    const [ senetorialDistricts, setSenetorialDistricts ] = useState([]);
+    const [lgas, setLgas] = useState([]);
+    const [wards, setWards] = useState([]);
+    const [hoaConstituencies, setHoaConstituencies] = useState([]);
+    const [horConstituencies, setHorConstituencies] = useState([]);
+    const [senetorialDistricts, setSenetorialDistricts] = useState([]);
 
-    const [ loading, setLoading ] = useState(false);
-    const [ message, setMessage ] = useState(false);
-    const [ ninVerified, setNinVerified ] = useState(false);
-    const [ ninEntered, setNinEntered ] = useState(false);
-    const [ ninMessage, setNinMessage ] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState(false);
+    const [ninVerified, setNinVerified] = useState(false);
+    const [ninEntered, setNinEntered] = useState(false);
+    const [ninMessage, setNinMessage] = useState(false);
     const [phoneNumberVerified, setPhoneNumberVerified] = useState(null);
     const [phoneNumberMessage, setPhoneNumberMessage] = useState(false);
 
     const resetState = () => {
         setFormData({
-            firstname: "", lastname: "", phoneNumber: "", dob: "", nin: "", nationality: "", stateOfOrigin: "", lga: "", ward: "", senetorialDistrict: "", hoaConstituency: "", horConstituency: ""
+            firstname: "", lastname: "", gender: "", phoneNumber: "", dob: "", nin: "", nationality: "", stateOfOrigin: "", lga: "", ward: "", senetorialDistrict: "", hoaConstituency: "", horConstituency: ""
         })
     }
 
@@ -41,6 +41,7 @@ const RegisterAsVoter = () => {
             if (regExp.test(nin)) {
                 // do something if only numbers are not found in your string 
                 setFormData(prev => ({ ...prev, phoneNumber: "09023830868" }));
+                setPhoneNumberVerified(true);
                 setNinVerified(true);
                 setNinMessage({
                     variant: true,
@@ -123,6 +124,7 @@ const RegisterAsVoter = () => {
     }
     const setFirstname = e => setFormData(prev => ({ ...prev, firstname: e.target.value.trim() }))
     const setLastname = e => setFormData(prev => ({ ...prev, lastname: e.target.value.trim() }))
+    const setGender = e => setFormData(prev => ({ ...prev, gender: e.target.value.trim() }))
     const setPhoneNumber = e => setFormData(prev => ({ ...prev, phoneNumber: e.target.value.trim() }))
     const setDob = e => setFormData(prev => ({ ...prev, dob: e.target.value.trim() }))
     const setNationality = e => setFormData(prev => ({ ...prev, nationality: e.target.value.trim() }))
@@ -131,12 +133,12 @@ const RegisterAsVoter = () => {
     const setSenetorialDistrict = e => setFormData(prev => ({ ...prev, senetorialDistrict: e.target.value.trim() }))
     const setHoaConstituency = e => setFormData(prev => ({ ...prev, hoaConstituency: e.target.value.trim() }))
     const setHorConstituency = e => setFormData(prev => ({ ...prev, horConstituency: e.target.value.trim() }))
-    
+
     const handleSubmit = e => {
         e.preventDefault();
         setLoading(true);
-        
-        if(formData.firstname !== "" && formData.lastname !== "" && formData.dob !== "" && formData.nin !== "" && formData.nationality !== "" && formData.stateOfOrigin !== "" && formData.lga !== "" && formData.ward !== "" && formData.senetorialDistrict !== "" && formData.hoaConstituency !== "" && formData.horConstituency !== ""){
+
+        if (formData.firstname !== "" && formData.lastname !== "" && formData.gender !== "" && formData.dob !== "" && formData.nin !== "" && formData.nationality !== "" && formData.stateOfOrigin !== "" && formData.lga !== "" && formData.ward !== "" && formData.senetorialDistrict !== "" && formData.hoaConstituency !== "" && formData.horConstituency !== "") {
             axios({
                 method: "POST",
                 url: REGISTER_VOTER,
@@ -145,32 +147,32 @@ const RegisterAsVoter = () => {
                 },
                 data: { formData }
             })
-            .then(({data}) => {
-                setLoading(false);
-                let variant = "";
-                if(data.success){
-                    variant = "success";
-                }else{
-                    variant = "failure"
-                }
-                setMessage({
-                    variant: variant,
-                    message: data.message
+                .then(({ data }) => {
+                    setLoading(false);
+                    let variant = "";
+                    if (data.success) {
+                        variant = "success";
+                    } else {
+                        variant = "failure"
+                    }
+                    setMessage({
+                        variant: variant,
+                        message: data.message
+                    })
+                    resetState();
                 })
-                resetState();
-            })
-            .catch(err => {
-                setLoading(false);
-                console.log(err)
-            })
-        }else{
+                .catch(err => {
+                    setLoading(false);
+                    console.log(err)
+                })
+        } else {
             setLoading(false);
             setMessage({
                 variant: 'failure',
                 message: "Complete filling the form before submitting."
             })
         }
-        
+
     }
 
     const fetchStates = () => {
@@ -178,78 +180,86 @@ const RegisterAsVoter = () => {
             method: 'GET',
             url: FETCH_STATES_ROUTE,
         })
-        .then(({data}) => {
-            if(data.success){
-                let state = data.data.filter(item => {
-                    if (item.alias === "kaduna") return true
-                });
-                state = state[0];
-                let fetchedLgas = state.lgas;
-                let fetchedStateConstituencies = state.stateConstituencies;
-                let fetchedFederalConstituencies = state.federalConstituencies;
-                let fetchedDistricts = state.senetorialDistricts;
-                setLgas(fetchedLgas);
-                setHoaConstituencies(fetchedStateConstituencies);
-                setHorConstituencies(fetchedFederalConstituencies);
-                setSenetorialDistricts(fetchedDistricts);
-            }else{
+            .then(({ data }) => {
+                if (data.success) {
+                    let state = data.data.filter(item => {
+                        if (item.alias === "kaduna") return true
+                    });
+                    state = state[0];
+                    let fetchedLgas = state.lgas;
+                    let fetchedStateConstituencies = state.stateConstituencies;
+                    let fetchedFederalConstituencies = state.federalConstituencies;
+                    let fetchedDistricts = state.senetorialDistricts;
+                    setLgas(fetchedLgas);
+                    setHoaConstituencies(fetchedStateConstituencies);
+                    setHorConstituencies(fetchedFederalConstituencies);
+                    setSenetorialDistricts(fetchedDistricts);
+                } else {
+                    setMessage({
+                        variant: 'failure',
+                        message: data.message
+                    })
+                }
+            })
+            .catch(err => {
                 setMessage({
                     variant: 'failure',
-                    message: data.message
+                    message: `${err}`
                 })
-            }
-        })
-        .catch(err => {
-            setMessage({
-                variant: 'failure',
-                message: `${err}`
             })
-        })
     }
     useEffect(() => {
         fetchStates();
     }, [])
-    
+
     return (
         <Container>
-            <Row className = "justify-content-center">
-                <Col md = {6}>
+            <Row className="justify-content-center">
+                <Col md={6}>
                     {message &&
-                        <div 
-                            className = {`alert m-4 p-4 text-center ${(message.variant === 'failure')?"alert-danger":"alert-success"}`}
+                        <div
+                            className={`alert m-4 p-4 text-center ${(message.variant === 'failure') ? "alert-danger" : "alert-success"}`}
                         >{message.message}</div>
                     }
                 </Col>
             </Row>
             <Row className="justify-content-center my-4">
-                <Col md = {6}>
-                    <Form onSubmit = {handleSubmit}>
-                        <Form.Group className = "my-3">
+                <Col md={6}>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="my-3">
                             <Row>
                                 <Col>
                                     <Form.Label>First Name</Form.Label>
-                                    <Form.Control value = {formData.firstname} onChange = {setFirstname} type = "text" placeholder = "Enter Only First Name" />
+                                    <Form.Control value={formData.firstname} onChange={setFirstname} type="text" placeholder="Enter Only First Name" />
                                 </Col>
                                 <Col>
                                     <Form.Label>Last Name</Form.Label>
-                                    <Form.Control value = {formData.lastname} onChange = {setLastname} type = "text" placeholder = "Last Name" />
+                                    <Form.Control value={formData.lastname} onChange={setLastname} type="text" placeholder="Last Name" />
                                 </Col>
                             </Row>
                         </Form.Group>
-                        <Form.Group className = "my-3">
-                            <Form.Label>Date of birth</Form.Label>
-                            <Form.Control value = {formData.dob} onChange = {setDob} type = "date" placeholder = "Date of birth" />
+                        <Form.Group className="my-3">
+                            <Form.Label>Gender</Form.Label>
+                            <Form.Control value={formData.gender} as="select" onChange={setGender} className="form-control">
+                                <option value="">--Select Gender--</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </Form.Control>
                         </Form.Group>
-                        <Form.Group className = "my-3">
+                        <Form.Group className="my-3">
+                            <Form.Label>Date of birth</Form.Label>
+                            <Form.Control value={formData.dob} onChange={setDob} type="date" placeholder="Date of birth" />
+                        </Form.Group>
+                        <Form.Group className="my-3">
                             <Form.Label>NIN</Form.Label>
-                            <Form.Control value = {formData.nin} className = {(ninMessage && ninEntered) ? (ninMessage.variant?"border-success": "border-danger") : ""} onBlur = {verifyNin} onChange = {setNin} type = "text" placeholder = "Enter your valid NIN" />
+                            <Form.Control value={formData.nin} className={(ninMessage && ninEntered) ? (ninMessage.variant ? "border-success" : "border-danger") : ""} onBlur={verifyNin} onChange={setNin} type="text" placeholder="Enter your valid NIN" />
                             {ninMessage && <Form.Text >
-                                <div className = {`${ninMessage.variant}?"text-success":"text-danger"`}>
+                                <div className={`${ninMessage.variant}?"text-success":"text-danger"`}>
                                     {ninMessage.message}
                                 </div>
                             </Form.Text>}
                         </Form.Group>
-                        <Form.Group className = "my-3">
+                        <Form.Group className="my-3">
                             <Form.Label>Phone Number</Form.Label>
                             <Form.Control value={formData.phoneNumber} className={(phoneNumberVerified !== null) ? (phoneNumberVerified ? "border-success" : "border-danger") : ""} onBlur={verifyPhoneNumber} onChange={setPhoneNumber} type="text" placeholder="Enter the phone number you're currently using." />
                             {phoneNumberMessage && <Form.Text >
@@ -260,58 +270,58 @@ const RegisterAsVoter = () => {
                         </Form.Group>
                         <Form.Group className="my-3">
                             <Form.Label>Nationality</Form.Label>
-                            <Form.Control value = {formData.nationality} as = "select" onChange = {setNationality} className = "form-control">
-                                <option value = "">--Select Country--</option>
-                                <option value = "Nigeria">Nigeria</option>
+                            <Form.Control value={formData.nationality} as="select" onChange={setNationality} className="form-control">
+                                <option value="">--Select Country--</option>
+                                <option value="Nigeria">Nigeria</option>
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group className = "my-3">
+                        <Form.Group className="my-3">
                             <Form.Label>State of Origin</Form.Label>
-                            <Form.Control value = {formData.stateOfOrigin} as = "select" onChange = {setStateOfOrigin} className = "form-control">
-                                <option value = "">--Select State--</option>
-                                <option value = "Kaduna">Kaduna</option>
+                            <Form.Control value={formData.stateOfOrigin} as="select" onChange={setStateOfOrigin} className="form-control">
+                                <option value="">--Select State--</option>
+                                <option value="Kaduna">Kaduna</option>
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group className = "my-3">
+                        <Form.Group className="my-3">
                             <Form.Label>Local government area</Form.Label>
-                            <Form.Control value = {formData.lga} as = "select" onChange = {setLga} className = "form-control">
-                                <option value = "">--Select LGA--</option>
-                                {lgas.map(item => <option key = {item.name} value = {item.name}>{item.name}</option>)}
+                            <Form.Control value={formData.lga} as="select" onChange={setLga} className="form-control">
+                                <option value="">--Select LGA--</option>
+                                {lgas.map(item => <option key={item.name} value={item.name}>{item.name}</option>)}
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group className = "my-3">
+                        <Form.Group className="my-3">
                             <Form.Label>Ward</Form.Label>
-                            <Form.Control value = {formData.ward} as = "select" onChange = {setWard} className = "form-control">
-                                <option value = "">--Select Ward--</option>
-                                {wards.map(item => <option key = {item} value = {item}>{item}</option>)}
+                            <Form.Control value={formData.ward} as="select" onChange={setWard} className="form-control">
+                                <option value="">--Select Ward--</option>
+                                {wards.map(item => <option key={item} value={item}>{item}</option>)}
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group className = "my-3">
+                        <Form.Group className="my-3">
                             <Form.Label>Senetorial District</Form.Label>
-                            <Form.Control value = {formData.senetorialDistrict} as = "select" onChange = {setSenetorialDistrict} className = "form-control">
-                                <option value = "">--Select District--</option>
-                                {senetorialDistricts.map(item => <option key = {item.name} value = {item.name}>{item.name}</option>)}
+                            <Form.Control value={formData.senetorialDistrict} as="select" onChange={setSenetorialDistrict} className="form-control">
+                                <option value="">--Select District--</option>
+                                {senetorialDistricts.map(item => <option key={item.name} value={item.name}>{item.name}</option>)}
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group className = "my-3">
+                        <Form.Group className="my-3">
                             <Form.Label>House of Assembly Constituency</Form.Label>
-                            <Form.Control value = {formData.hoaConstituency} as = "select" onChange = {setHoaConstituency} className = "form-control">
-                                <option value = "">--Select Constituency--</option>
-                                {hoaConstituencies.map(item => <option key = {item.name} value = {item.name}>{item.name}</option>)}
+                            <Form.Control value={formData.hoaConstituency} as="select" onChange={setHoaConstituency} className="form-control">
+                                <option value="">--Select Constituency--</option>
+                                {hoaConstituencies.map(item => <option key={item.name} value={item.name}>{item.name}</option>)}
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group className = "my-3">
+                        <Form.Group className="my-3">
                             <Form.Label>House of Representatives Constituency</Form.Label>
-                            <Form.Control value = {formData.horConstituency} as = "select" onChange = {setHorConstituency} className = "form-control">
-                                <option value = "">--Select Constituency--</option>
-                                {horConstituencies.map(item => <option key = {item.name} value = {item.name}>{item.name}</option>)}
+                            <Form.Control value={formData.horConstituency} as="select" onChange={setHorConstituency} className="form-control">
+                                <option value="">--Select Constituency--</option>
+                                {horConstituencies.map(item => <option key={item.name} value={item.name}>{item.name}</option>)}
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group className = "my-3 text-center">
+                        <Form.Group className="my-3 text-center">
                             <Button type="submit" variant="default" className="border" disabled={(loading || !(ninEntered && ninVerified && phoneNumberVerified))} >
-                                {loading?
-                                    <Loading variant = "sm" />
-                                :
+                                {loading ?
+                                    <Loading variant="sm" />
+                                    :
                                     "Register"
                                 }
                             </Button>
@@ -319,11 +329,11 @@ const RegisterAsVoter = () => {
                     </Form>
                 </Col>
             </Row>
-            <Row className = "justify-content-center">
-                <Col md = {6}>
+            <Row className="justify-content-center">
+                <Col md={6}>
                     {message &&
-                        <div 
-                            className = {`alert m-4 p-4 text-center ${(message.variant === 'failure')?"alert-danger":"alert-success"}`}
+                        <div
+                            className={`alert m-4 p-4 text-center ${(message.variant === 'failure') ? "alert-danger" : "alert-success"}`}
                         >{message.message}</div>
                     }
                 </Col>

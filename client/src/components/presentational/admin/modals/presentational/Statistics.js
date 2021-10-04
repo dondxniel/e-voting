@@ -1,62 +1,72 @@
+import React, { useEffect } from 'react';
 import { Container, Card } from 'react-bootstrap';
 import StatElement from './StatElement';
 
-const Statistics = () => {
+const Statistics = ({ stats }) => {
+
+    useEffect(() => {
+        // console.log("Whole props", props);
+        console.log(stats);
+        // console.log(typeof stats);
+    }, [])
+
     return (
         <Container>
-            <StatElement 
-                title = "Total number of registered voters."
-                >
-                64000
-            </StatElement>
-            <StatElement 
-                title = "Total number of votes cast."
+            <StatElement
+                title="Total number of registered voters."
             >
-                50000
+                {/* 45000 */}
+                {stats.totalRegVoters}
             </StatElement>
-            <StatElement 
-                title = "Percentage of voter turnout."
+            <StatElement
+                title="Total number of votes cast."
             >
-                73.1%
+                {/* 5000 */}
+                {stats.totalVotesCast}
             </StatElement>
-            <StatElement 
-                title = "Number of votes cast by political party."
-                >
-                <Card className = "py-1 my-1">
-                    PDP: 25000
-                </Card>
-                <Card className = "py-1 my-1">
-                    APC: 15000
-                </Card>
-                <Card className = "py-1 my-1">
-                    PRP: 10000
-                </Card>
+            <StatElement
+                title="Percentage of voter turnout."
+            >
+                {/* 73.1% */}
+                {stats.pVoterTurnout}
             </StatElement>
-            <StatElement 
-                title = "Percentage of votes cast by political party."
-                >
-                <Card className = "py-1 my-1">
-                    PDP: 40%
-                </Card>
-                <Card className = "py-1 my-1">
-                    APC: 35%
-                </Card>
-                <Card className = "py-1 my-1">
-                    PRP: 25%
-                </Card>
+            <StatElement
+                title="Number of votes cast by political party."
+            >
+                {stats.nVotesByParty.map(item => (
+                    <Card className="py-1 my-1">
+                        {item.party}: {item.num}
+                    </Card>
+                ))}
             </StatElement>
-            <StatElement 
-                title = "Percentage of votes cast by gender."
-                >
-                <Card className = "py-1 my-1">
-                    Male: 40%
+            <StatElement
+                title="Percentage of votes cast by political party."
+            >
+                {stats.pVotesByParty.map(item => (
+                    <Card className="py-1 my-1">
+                        {item.party}: {item.percent}%
+                    </Card>
+                ))}
+            </StatElement>
+            <StatElement
+                title="Percentage of votes cast by gender."
+            >
+                <Card className="py-1 my-1">
+                    Male: {stats.pVotesByGender.male}%
                 </Card>
-                <Card className = "py-1 my-1">
-                    Female: 35%
+                <Card className="py-1 my-1">
+                    Female: {stats.pVotesByGender.female}%
                 </Card>
             </StatElement>
         </Container>
     )
+}
+
+Statistics.defaultProps = {
+    stats: {
+        totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
+        nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
+    }
 }
 
 export default Statistics

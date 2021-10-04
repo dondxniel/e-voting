@@ -3,51 +3,55 @@ const Schema = mongoose.Schema;
 
 const VotersModel = new Schema({
     firstname: {
-        type:  String,
+        type: String,
         required: true
     },
     lastname: {
-        type:  String,
+        type: String,
+        required: true
+    },
+    gender: {
+        type: String,
         required: true
     },
     phoneNumber: {
         type: String,
         required: true
-    },  
+    },
     dob: {
-        type:  String,
+        type: String,
         required: true
     },
     nin: {
-        type:  String,
+        type: String,
         required: true
     },
     nationality: {
-        type:  String,
+        type: String,
         required: true
     },
     stateOfOrigin: {
-        type:  String,
+        type: String,
         required: true
     },
     lga: {
-        type:  String,
+        type: String,
         required: true
     },
     ward: {
-        type:  String,
+        type: String,
         required: true
     },
     senetorialDistrict: {
-        type:  String,
+        type: String,
         required: true
     },
     hoaConstituency: {
-        type:  String,
+        type: String,
         required: true
     },
     horConstituency: {
-        type:  String,
+        type: String,
         required: true
     },
 })
@@ -55,7 +59,7 @@ const VotersModel = new Schema({
 module.exports = mongoose.model("Voters", VotersModel);
 
 
-/* 
+/*
 {
     firstname: 'Daniel',
     lastname: 'Don',

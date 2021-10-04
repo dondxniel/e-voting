@@ -9,3 +9,5 @@ export const START_ELECTION_ROUTE = `${backend}/election/start-election/`;
 export const LOGIN_ROUTE = `${backend}/auth/login/`;
 export const REGISTER_VOTER = `${backend}/voter/register-voter/`;
 export const FETCH_ELECTION_STATS = `${backend}/election/fetch-election-stats/`;
+export const FETCH_LGA_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/lga-num-of-registered-voters`;
+export const FETCH_WARD_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/ward-num-of-registered-voters`;
