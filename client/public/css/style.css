@@ -45,3 +45,7 @@
 .lg-loading{
     height: 95px
 }
+.disabled-input{
+    cursor: not-allowed;
+    pointer-events: all;
+}

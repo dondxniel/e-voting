@@ -5,7 +5,16 @@ import axios from 'axios';
 import LocalGovtElect from '../../presentational/admin/modals/LgElections/LgElectionsModal';
 import StateElectionsModal from '../../presentational/admin/modals/StateElections/StateElectionsModal';
 import FederalElectionsModal from '../../presentational/admin/modals/FederalElections/FederalElectionsModal';
-import { FETCH_ELECTION_STATS, FETCH_STATES_ROUTE, FETCH_LGA_NUM_OF_REGISTERED_VOTERS, FETCH_WARD_NUM_OF_REGISTERED_VOTERS } from '../../../constants/endpoints';
+import {
+    FETCH_ELECTION_STATS,
+    FETCH_STATES_ROUTE,
+    FETCH_LGA_NUM_OF_REGISTERED_VOTERS,
+    FETCH_WARD_NUM_OF_REGISTERED_VOTERS,
+    FETCH_STATE_NUM_OF_REGISTERED_VOTERS,
+    FETCH_HOACONSTITUENCY_NUM_OF_REGISTERED_VOTERS,
+    FETCH_SENETORIAL_NUM_OF_REGISTERED_VOTERS,
+    FETCH_HOR_NUM_OF_REGISTERED_VOTERS
+} from '../../../constants/endpoints';
 import Loading from '../../presentational/Loading';
 
 const Home = () => {
@@ -17,6 +26,11 @@ const Home = () => {
     // Local government election locations
     const [lgas, setLgas] = useState([]);
     const [wards, setWards] = useState([]);
+    // State government election locations
+    const [stateConstituencies, setStateConstituencies] = useState([]);
+    // Federal government election locations
+    const [senetorialDistricts, setSenetorialDistricts] = useState([]);
+    const [federalConstituencies, setFederalConstituencies] = useState([]);
 
     const [localElectionResults, setLocalElectionResults] = useState([]);
     const [stateElectionResults, setStateElectionResults] = useState([]);
@@ -58,7 +72,7 @@ const Home = () => {
             })
     }
 
-    const fetchLgas = () => {
+    const fetchLocations = () => {
         axios({
             method: 'GET',
             url: FETCH_STATES_ROUTE,
@@ -68,8 +82,15 @@ const Home = () => {
                     let kaduna = data.data.filter(item => {
                         if (item.alias === "kaduna") return true
                     });
-                    let fetchedLgas = kaduna[0].lgas;
+                    kaduna = kaduna[0];
+                    let fetchedLgas = kaduna.lgas;
+                    let fetchedStateConstituencies = kaduna.stateConstituencies;
+                    let fetchedSenetorialDistricts = kaduna.senetorialDistricts;
+                    let fetchedFederalConstituencies = kaduna.federalConstituencies;
+                    setStateConstituencies(fetchedStateConstituencies);
                     setLgas(fetchedLgas);
+                    setSenetorialDistricts(fetchedSenetorialDistricts);
+                    setFederalConstituencies(fetchedFederalConstituencies);
                 } else {
                     setMessage({
                         variant: 'failure',
@@ -127,7 +148,7 @@ const Home = () => {
         try {
             let data = await axios({
                 method: 'GET',
-                url: `${FETCH_LGA_NUM_OF_REGISTERED_VOTERS}/${cookies['adminState']}/${lga}/${ward}`,
+                url: `${FETCH_WARD_NUM_OF_REGISTERED_VOTERS}/${cookies['adminState']}/${lga}/${ward}`,
                 headers: {
                     "content-type": "application/json",
                     'Authorization': `${cookies['adminToken']}`
@@ -149,10 +170,115 @@ const Home = () => {
         }
     }
 
+    const stateNumRegisteredVoters = async () => {
+        try {
+            let data = await axios({
+                method: 'GET',
+                url: `${FETCH_STATE_NUM_OF_REGISTERED_VOTERS}/${cookies['adminState']}`,
+                headers: {
+                    "content-type": "application/json",
+                    'Authorization': `${cookies['adminToken']}`
+                },
+            })
+            if (data.data.success) {
+                return data.data;
+            } else {
+                setMessage({
+                    variant: 'failure',
+                    message: data.message
+                })
+            }
+        } catch (err) {
+            setMessage({
+                variant: 'failure',
+                message: `${err}`
+            })
+        }
+    }
+
+    const hoaConstituencyNumRegisteredVoters = async hoaConstituency => {
+        try {
+            let data = await axios({
+                method: 'GET',
+                url: `${FETCH_HOACONSTITUENCY_NUM_OF_REGISTERED_VOTERS}/${cookies['adminState']}/${hoaConstituency}`,
+                headers: {
+                    "content-type": "application/json",
+                    'Authorization': `${cookies['adminToken']}`
+                },
+            })
+            if (data.data.success) {
+                return data.data;
+            } else {
+                setMessage({
+                    variant: 'failure',
+                    message: data.message
+                })
+            }
+        } catch (err) {
+            setMessage({
+                variant: 'failure',
+                message: `${err}`
+            })
+        }
+    }
+
+    const senetorialNumRegisteredVoters = async district => {
+        try {
+            let data = await axios({
+                method: 'GET',
+                url: `${FETCH_SENETORIAL_NUM_OF_REGISTERED_VOTERS}/${cookies['adminState']}/${district}`,
+                headers: {
+                    "content-type": "application/json",
+                    'Authorization': `${cookies['adminToken']}`
+                },
+            })
+            if (data.data.success) {
+                return data.data;
+            } else {
+                setMessage({
+                    variant: 'failure',
+                    message: data.message
+                })
+            }
+        } catch (err) {
+            setMessage({
+                variant: 'failure',
+                message: `${err}`
+            })
+        }
+    }
+
+    const horNumRegisteredVoters = async horConstituency => {
+        try {
+            let data = await axios({
+                method: 'GET',
+                url: `${FETCH_HOR_NUM_OF_REGISTERED_VOTERS}/${cookies['adminState']}/${horConstituency}`,
+                headers: {
+                    "content-type": "application/json",
+                    'Authorization': `${cookies['adminToken']}`
+                },
+            })
+            if (data.data.success) {
+                // console.log(data.data)
+                return data.data;
+            } else {
+                setMessage({
+                    variant: 'failure',
+                    message: data.message
+                })
+            }
+        } catch (err) {
+            setMessage({
+                variant: 'failure',
+                message: `${err}`
+            })
+        }
+    }
+
     useEffect(() => {
         // lgaNumRegisteredVoters();
         fetchElectionStats();
-        fetchLgas();
+        fetchLocations();
     }, [])
 
     return (
@@ -191,14 +317,28 @@ const Home = () => {
                                 (cookies['adminType'] === "super" || cookies['electionType'] === "state") &&
                                 <Col md={3}>
                                     {/* See state govt. election results */}
-                                    <StateElectionsModal result={stateElectionResults} />
+                                    <StateElectionsModal
+                                        result={stateElectionResults}
+                                        state={cookies["adminState"]}
+                                        stateConstituencies={stateConstituencies}
+                                        stateNumRegisteredVoters={stateNumRegisteredVoters}
+                                        hoaConstituencyNumRegisteredVoters={hoaConstituencyNumRegisteredVoters}
+                                    />
                                 </Col>
                             }
                             {
                                 (cookies['adminType'] === "super" || cookies['electionType'] === "federal") &&
                                 <Col md={3}>
                                     {/* See federal govt. election results */}
-                                    <FederalElectionsModal result={federalElectionResults} />
+                                    <FederalElectionsModal
+                                        result={federalElectionResults}
+                                        state={cookies["adminState"]}
+                                        senetorialDistricts={senetorialDistricts}
+                                        stateNumRegisteredVoters={stateNumRegisteredVoters}
+                                        senetorialNumRegisteredVoters={senetorialNumRegisteredVoters}
+                                        horNumRegisteredVoters={horNumRegisteredVoters}
+                                        federalConstituencies={federalConstituencies}
+                                    />
                                 </Col>
                             }
                         </Row>

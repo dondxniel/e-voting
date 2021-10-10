@@ -1,27 +1,29 @@
 import { Container, Row, Col, Form } from 'react-bootstrap';
 
-const Governorship = ({children}) => {
+const Governorship = ({ children, data, state, setGovernorshipData }) => {
     return (
         <Container>
             <Row>
-                <Col>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label><b>Select State</b></Form.Label>
-                            <select className = "form-control">
-                                <option>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                            <hr />
-                            <Container>
-                                {children}
-                            </Container>
-                        </Form.Group>
-                    </Form>
-                </Col>   
-            </Row> 
+                {(Object.keys(data).length === 0) ?
+                    <p className="alert alert-danger p-3 m-3 text-center">No election to show</p>
+                    :
+                    <Col>
+                        <Form>
+                            <Form.Group>
+                                <Form.Label><b>Select State</b></Form.Label>
+                                <select onChange={setGovernorshipData} className="form-control" >
+                                    <option value="">--Select State--</option>
+                                    <option value={state}>{state}</option>
+                                </select>
+                                <hr />
+                                <Container>
+                                    {children}
+                                </Container>
+                            </Form.Group>
+                        </Form>
+                    </Col>
+                }
+            </Row>
         </Container>
     )
 }

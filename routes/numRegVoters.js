@@ -6,13 +6,13 @@ const { } = require("../constants/successMessages");
 const { } = require("../constants/errorMessages");
 
 
-router.get('/lga-num-of-registered-voters/:state/:locationType/:location', auth, (req, res) => {
-    const { state, locationType, location } = req.params;
+router.get('/lga-num-of-registered-voters/:state/:lga', auth, (req, res) => {
+    const { state, lga } = req.params;
     const queryObj = {};
     queryObj["stateOfOrigin"] = state;
-    queryObj[locationType] = location;
+    queryObj["lga"] = lga;
 
-    if (state !== "" && locationType !== "" && location !== "") {
+    if (state !== "" && lga !== "") {
         Voters.countDocuments({ ...queryObj })
             .then(data => {
                 res.json({
@@ -34,12 +34,119 @@ router.get('/lga-num-of-registered-voters/:state/:locationType/:location', auth,
     }
 })
 router.get('/ward-num-of-registered-voters/:state/:lga', auth, (req, res) => {
-    const { state, location } = req.params;
+    const { state, lga } = req.params;
     const queryObj = {};
     queryObj["stateOfOrigin"] = state;
     queryObj["lga"] = lga;
 
     if (state !== "" && lga !== "") {
+        Voters.countDocuments({ ...queryObj })
+            .then(data => {
+                res.json({
+                    success: true,
+                    data: data
+                })
+            })
+            .catch(err => {
+                res.json({
+                    success: false,
+                    data: err
+                })
+            })
+    } else {
+        res.json({
+            success: false,
+            message: "Invalid parameters."
+        })
+    }
+})
+router.get('/state-num-of-registered-voters/:state', auth, (req, res) => {
+    const { state } = req.params;
+    const queryObj = {};
+    queryObj["stateOfOrigin"] = state;
+
+    if (state !== "") {
+        Voters.countDocuments({ ...queryObj })
+            .then(data => {
+                res.json({
+                    success: true,
+                    data: data
+                })
+            })
+            .catch(err => {
+                res.json({
+                    success: false,
+                    data: err
+                })
+            })
+    } else {
+        res.json({
+            success: false,
+            message: "Invalid parameters."
+        })
+    }
+})
+router.get('/hoaConstituency-num-of-registered-voters/:state/:hoaConstituency', auth, (req, res) => {
+    const { state, hoaConstituency } = req.params;
+    const queryObj = {};
+    queryObj["stateOfOrigin"] = state;
+    queryObj["hoaConstituency"] = hoaConstituency;
+
+    if (state !== "") {
+        Voters.countDocuments({ ...queryObj })
+            .then(data => {
+                res.json({
+                    success: true,
+                    data: data
+                })
+            })
+            .catch(err => {
+                res.json({
+                    success: false,
+                    data: err
+                })
+            })
+    } else {
+        res.json({
+            success: false,
+            message: "Invalid parameters."
+        })
+    }
+})
+router.get('/senetorial-num-of-registered-voters/:state/:district', auth, (req, res) => {
+    const { state, district } = req.params;
+    const queryObj = {};
+    queryObj["stateOfOrigin"] = state;
+    queryObj["senetorialDistrict"] = district;
+
+    if (state !== "") {
+        Voters.countDocuments({ ...queryObj })
+            .then(data => {
+                res.json({
+                    success: true,
+                    data: data
+                })
+            })
+            .catch(err => {
+                res.json({
+                    success: false,
+                    data: err
+                })
+            })
+    } else {
+        res.json({
+            success: false,
+            message: "Invalid parameters."
+        })
+    }
+})
+router.get('/hor-num-of-registered-voters/:state/:horConstituency', auth, (req, res) => {
+    const { state, horConstituency } = req.params;
+    const queryObj = {};
+    queryObj["stateOfOrigin"] = state;
+    queryObj["horConstituency"] = horConstituency;
+
+    if (state !== "") {
         Voters.countDocuments({ ...queryObj })
             .then(data => {
                 res.json({

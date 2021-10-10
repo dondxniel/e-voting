@@ -91,16 +91,16 @@ router.get('/fetch-election-stats', (req, res) => {
             stateHoa = stateHoa.length > 0 ? [stateHoa[0]] : [];
 
             // Gathering all the results for the federal govt. elections.
-            let federalPresedential = data.filter(item => item.admin.electionType === 'federal' && item.electionType === 'presedential');
+            let federalPresedential = data.filter(item => item.admin.electionType === 'federal' && item.electionType === 'presidential');
             federalPresedential = federalPresedential.length > 0 ? [federalPresedential[0]] : [];
-            let federalSenaotorial = data.filter(item => item.admin.electionType === 'federal' && item.electionType === 'senatorial');
+            let federalSenaotorial = data.filter(item => item.admin.electionType === 'federal' && item.electionType === 'senetorial');
             federalSenaotorial = federalSenaotorial.length > 0 ? [federalSenaotorial[0]] : [];
             let federalHor = data.filter(item => item.admin.electionType === 'federal' && item.electionType === 'hor');
             federalHor = federalHor.length > 0 ? [federalHor[0]] : [];
 
             // The result that gets returned to the client.
             let l = [...localsCounsellorship, ...localsChairmanship];
-            console.log(l)
+            // console.log(l)
             res.json({
                 success: true,
                 data: {

@@ -1,14 +1,7 @@
-import React, { useEffect } from 'react';
 import { Container, Card } from 'react-bootstrap';
 import StatElement from './StatElement';
 
 const Statistics = ({ stats }) => {
-
-    useEffect(() => {
-        // console.log("Whole props", props);
-        console.log(stats);
-        // console.log(typeof stats);
-    }, [])
 
     return (
         <Container>
@@ -34,7 +27,7 @@ const Statistics = ({ stats }) => {
                 title="Number of votes cast by political party."
             >
                 {stats.nVotesByParty.map(item => (
-                    <Card className="py-1 my-1">
+                    <Card className="py-1 my-1" key={item.party}>
                         {item.party}: {item.num}
                     </Card>
                 ))}
@@ -43,7 +36,7 @@ const Statistics = ({ stats }) => {
                 title="Percentage of votes cast by political party."
             >
                 {stats.pVotesByParty.map(item => (
-                    <Card className="py-1 my-1">
+                    <Card className="py-1 my-1" key={item.party}>
                         {item.party}: {item.percent}%
                     </Card>
                 ))}

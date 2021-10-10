@@ -18,11 +18,11 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
         totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
         nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
     })
-    const [statsSet, setStatsSet] = useState(false);
+    const [chairmanshipStatsSet, setCharimanshipStatsSet] = useState(false);
+    const [counselorshipStatsSet, setCounselorshipStatsSet] = useState(false);
     const [statLoading, setStatLoading] = useState(false);
 
     const setData = () => {
-        // console.log(result);
         let chair = result.filter(item => item.electionType === 'chairmanship');
         let counsel = result.filter(item => item.electionType === 'counselorship');
 
@@ -46,107 +46,99 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
     }
 
     const setCharimanshipData = async e => {
-        setSelectedLgFunc(e)
-        setStatLoading(true);
-        let locationType = "lga";
-        let location = e.target.value;
-        // console.log(locationType, location)
+        if (chairmanship) {
+            setCharimanshipStatsSet(false);
+            lgSelected(e)
+            setStatLoading(true);
+            let lga = e.target.value;
 
-        // getting totalRegVoters
-        let totalRegVoters = await lgaNumRegisteredVoters(locationType, location);
-        console.log('Before conversion: ', totalRegVoters.data)
-        if (totalRegVoters.success === true) {
-            totalRegVoters = totalRegVoters.data;
+            // getting totalRegVoters
+            let totalRegVoters = await lgaNumRegisteredVoters(lga);
+            if (totalRegVoters.success === true) {
+                totalRegVoters = totalRegVoters.data;
 
-            totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
-            console.log('After conversion: ', totalRegVoters)
+                totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
 
 
-            // calculating totalVotesCast
-            let totalVotesCast = 0; // Total number of people that voted.
-            // console.log(chairmanship);
-            chairmanship.contestingParties.forEach(item => {
-                item.votes.forEach(voter => {
-                    if (voter[locationType] === location) {
-                        ++totalVotesCast;
-                    }
+                // calculating totalVotesCast
+                let totalVotesCast = 0; // Total number of people that voted.
+                chairmanship.contestingParties.forEach(item => {
+                    item.votes.forEach(voter => {
+                        if (voter["lga"] === lga) {
+                            ++totalVotesCast;
+                        }
+                    })
                 })
-            })
 
-            // calculating pVoterTurnout
-            let pVoterTurnout = (100 * totalVotesCast) / totalRegVoters // Percentage of voters that came to vote to the people that are eligible to vote.
+                // calculating pVoterTurnout
+                let pVoterTurnout = (100 * totalVotesCast) / totalRegVoters // Percentage of voters that came to vote to the people that are eligible to vote.
 
-            // calculating nVotesByParty
-            let nVotesByParty = [];
-            chairmanship.contestingParties.forEach(party => {
-                let partyName = party.party.abb;
-                let num = party.votes.length;
-                nVotesByParty.push({ party: partyName, num });
-            })
-
-            // calculating pVotesByParty
-            let pVotesByParty = [];
-            nVotesByParty.forEach(item => {
-                let percent = (totalVotesCast > 0) ? ((100 * totalVotesCast) / item.num) : 0;
-                pVotesByParty.push({ party: item.party, percent });
-            })
-
-            // calculating pVotesByGender
-            let maleVotes = 0;
-            let femaleVotes = 0;
-            chairmanship.contestingParties.forEach(item => {
-                item.votes.forEach(voter => {
-                    if (voter.gender === "Male") {
-                        ++maleVotes;
-                    } else if (voter.gender === "Female") {
-                        ++femaleVotes;
-                    }
+                // calculating nVotesByParty
+                let nVotesByParty = [];
+                chairmanship.contestingParties.forEach(party => {
+                    let partyName = party.party.abb;
+                    let num = party.votes.length;
+                    nVotesByParty.push({ party: partyName, num });
                 })
-            })
-            maleVotes = (totalVotesCast > 0) ? ((100 * totalVotesCast) / maleVotes) : 0;
-            femaleVotes = (totalVotesCast > 0) ? ((100 * totalVotesCast) / femaleVotes) : 0;
-            let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
-            // console.log({
-            //     totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
-            // })
-            let tempStats = {
-                totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
+                // calculating pVotesByParty
+                let pVotesByParty = [];
+                nVotesByParty.forEach(item => {
+                    let percent = (totalVotesCast > 0) ? ((100 * totalVotesCast) / item.num) : 0;
+                    pVotesByParty.push({ party: item.party, percent });
+                })
+
+                // calculating pVotesByGender
+                let maleVotes = 0;
+                let femaleVotes = 0;
+                chairmanship.contestingParties.forEach(item => {
+                    item.votes.forEach(voter => {
+                        if (voter.gender === "Male") {
+                            ++maleVotes;
+                        } else if (voter.gender === "Female") {
+                            ++femaleVotes;
+                        }
+                    })
+                })
+                maleVotes = (totalVotesCast > 0) ? ((100 * totalVotesCast) / maleVotes) : 0;
+                femaleVotes = (totalVotesCast > 0) ? ((100 * totalVotesCast) / femaleVotes) : 0;
+                let pVotesByGender = { male: maleVotes, female: femaleVotes };
+
+                let tempStats = {
+                    totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
+                }
+
+                // console.log(tempStats)
+
+                setStats(tempStats)
+
+                setCharimanshipStatsSet(true);
+                setStatLoading(false);
+
+            } else {
+                alert("Error fetching total registered voters.");
             }
-
-            // console.log(tempStats)
-            setStats(tempStats)
-
-            setStatsSet(true);
-            setStatLoading(false);
-            // {
-            //     totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
-            //     nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
-            // }
-
-        } else {
-            alert("Error fetching total registered voters.");
         }
 
     }
 
     const setCounselorshipData = async e => {
         setStatLoading(true);
-
+        setCounselorshipStatsSet(false);
         // getting totalRegVoters
         let totalRegVoters = await wardNumRegisteredVoters(selectedLg, selectedWard);
+
 
         if (totalRegVoters.success === true) {
             totalRegVoters = totalRegVoters.data;
 
             totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
-            console.log('After conversion: ', totalRegVoters)
 
 
             // calculating totalVotesCast
             let totalVotesCast = 0; // Total number of people that voted.
-            // console.log(chairmanship);
-            chairmanship.contestingParties.forEach(item => {
+
+            counsellorship.contestingParties.forEach(item => {
                 item.votes.forEach(voter => {
                     if (voter["ward"] === selectedWard) {
                         ++totalVotesCast;
@@ -159,7 +151,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
 
             // calculating nVotesByParty
             let nVotesByParty = [];
-            chairmanship.contestingParties.forEach(party => {
+            counsellorship.contestingParties.forEach(party => {
                 let partyName = party.party.abb;
                 let num = party.votes.length;
                 nVotesByParty.push({ party: partyName, num });
@@ -175,7 +167,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
             // calculating pVotesByGender
             let maleVotes = 0;
             let femaleVotes = 0;
-            chairmanship.contestingParties.forEach(item => {
+            counsellorship.contestingParties.forEach(item => {
                 item.votes.forEach(voter => {
                     if (voter.gender === "Male") {
                         ++maleVotes;
@@ -194,7 +186,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
 
             setStats(tempStats)
 
-            setStatsSet(true);
+            setCounselorshipStatsSet(true);
             setStatLoading(false);
         } else {
             alert("Error fetching total registered voters.");
@@ -235,14 +227,14 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                                         setCharimanshipData={setCharimanshipData}
                                         selectedLg={selectedLg}
                                     >
-                                        {statsSet ?
+                                        {chairmanshipStatsSet ?
                                             <Statistics stats={stats} />
                                             :
                                             <>
                                                 {statLoading ?
                                                     <div className="p-3 m-3 alert alert-default text-center">Loading...</div>
                                                     :
-                                                    <div className="p-3 m-3 alert alert-success text-center">Select a location to see result statistics.</div>
+                                                    <div className="p-3 m-3 alert alert-success     text-center">Select a location to see result statistics.</div>
                                                 }
                                             </>
                                         }
@@ -253,13 +245,12 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                                         data={counsellorship}
                                         lgas={lgas}
                                         wards={wards}
-                                        // setSelectedLgFunc={setSelectedLgFunc}
                                         lgSelected={lgSelected}
                                         selectedLg={selectedLg}
                                         setSelectedWardFunc={setSelectedWardFunc}
                                         selectedWard={selectedWard}
                                     >
-                                        {statsSet ?
+                                        {counselorshipStatsSet ?
                                             <Statistics stats={stats} />
                                             :
                                             <>

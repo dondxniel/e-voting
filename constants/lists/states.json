@@ -476,173 +476,627 @@
         ]
     },
     {
-        "id":  18,
-        "pcode":  19,
+        "id": 18,
+        "pcode": 19,
         "state": "Kaduna",
         "alias": "kaduna",
         "lgas": [
             {
                 "name": "Birnin Gwari",
-                "wards": [ "Dogon Dawa", "Gayam", "Kakangi", "Kazage", "Kutemesi", "Kuyelo", "Magajin Gari I", "Magajin Gari Ii", "Magajin Gari Iii", "Randagi", "Tabanni" ]
+                "wards": [
+                    "Dogon Dawa",
+                    "Gayam",
+                    "Kakangi",
+                    "Kazage",
+                    "Kutemesi",
+                    "Kuyelo",
+                    "Magajin Gari I",
+                    "Magajin Gari Ii",
+                    "Magajin Gari Iii",
+                    "Randagi",
+                    "Tabanni"
+                ]
             },
             {
                 "name": "Chikun",
-                "wards": [ "Chikun", "Gwagwada", "Kakau", "Kujama", "Kunai", "Kuriga", "Narayi", "Nasarawa", "Rido", "S/Ggarin Arewa Tirkaniya", "Sabon Tasha", "Ung. Yelwa" ]
+                "wards": [
+                    "Chikun",
+                    "Gwagwada",
+                    "Kakau",
+                    "Kujama",
+                    "Kunai",
+                    "Kuriga",
+                    "Narayi",
+                    "Nasarawa",
+                    "Rido",
+                    "Sabon gari Arewa Tirkaniya",
+                    "Sabon Tasha",
+                    "Ung. Yelwa"
+                ]
             },
             {
                 "name": "Giwa",
-                "wards": [ "Danmahawayi", "Galadimawa", "Gangara", "Giwa", "Idasu", "Kadage", "Kakangi (Giwa)", "Kidandan", "Pan Hauya", "Shika", "Yakawada" ]
+                "wards": [
+                    "Danmahawayi",
+                    "Galadimawa",
+                    "Gangara",
+                    "Giwa",
+                    "Idasu",
+                    "Kadage",
+                    "Kakangi (Giwa)",
+                    "Kidandan",
+                    "Pan Hauya",
+                    "Shika",
+                    "Yakawada"
+                ]
             },
             {
                 "name": "Ikara",
-                "wards": [ "Auchan", "Ikara", "Janfala", "K/Kogi", "Kuya", "Paki", "Pala", "Rumi", "Saulawa", "Saya-Saya" ]
+                "wards": [
+                    "Auchan",
+                    "Ikara",
+                    "Janfala",
+                    "K. Kogi",
+                    "Kuya",
+                    "Paki",
+                    "Pala",
+                    "Rumi",
+                    "Saulawa",
+                    "Saya-Saya"
+                ]
             },
             {
                 "name": "Igabi",
-                "wards": [ "Afaka", "Birnin Yero", "Gadan Gayan", "Gwaraji", "Igabi", "Kerawa", "Kwarau", "Rigachikun", "Rigasa", "Sabon Birnin Daji", "Turunku", "Zangon Aya" ]
+                "wards": [
+                    "Afaka",
+                    "Birnin Yero",
+                    "Gadan Gayan",
+                    "Gwaraji",
+                    "Igabi",
+                    "Kerawa",
+                    "Kwarau",
+                    "Rigachikun",
+                    "Rigasa",
+                    "Sabon Birnin Daji",
+                    "Turunku",
+                    "Zangon Aya"
+                ]
             },
             {
                 "name": "Jaba",
-                "wards": [ "Chori", "Daddu", "Dura/Bitaro", "Fada (Jaba)", "Fai", "Nduyah", "Nok", "Sabchem", "Sabzuro", "Sambam" ]
+                "wards": [
+                    "Chori",
+                    "Daddu",
+                    "Dura and Bitaro",
+                    "Fada (Jaba)",
+                    "Fai",
+                    "Nduyah",
+                    "Nok",
+                    "Sabchem",
+                    "Sabzuro",
+                    "Sambam"
+                ]
             },
             {
                 "name": "Jema'A",
-                "wards": [ "Asso", "Atuku", "Bedde", "Gidan Waya", "Godogodo", "Jagindi", "Kafanchan 'A'", "Kafanchan 'B'", "Kagoma", "Kaninkon", "Maigizo 'A'", "Takau 'B'" ]
+                "wards": [
+                    "Asso",
+                    "Atuku",
+                    "Bedde",
+                    "Gidan Waya",
+                    "Godogodo",
+                    "Jagindi",
+                    "Kafanchan 'A'",
+                    "Kafanchan 'B'",
+                    "Kagoma",
+                    "Kaninkon",
+                    "Maigizo 'A'",
+                    "Takau 'B'"
+                ]
             },
             {
                 "name": "Kachia",
-                "wards": [ "Agunu", "Ankwa", "Awon", "Bishini", "Doka (Kachia)", "Gidan Tagwai", "Gumel", "Kachia Urban", "Katari", "Kurmin Musa", "Kwaturu", "Sabon Sarki" ]
+                "wards": [
+                    "Agunu",
+                    "Ankwa",
+                    "Awon",
+                    "Bishini",
+                    "Doka (Kachia)",
+                    "Gidan Tagwai",
+                    "Gumel",
+                    "Kachia Urban",
+                    "Katari",
+                    "Kurmin Musa",
+                    "Kwaturu",
+                    "Sabon Sarki"
+                ]
             },
             {
                 "name": "Kaduna North",
-                "wards": [ "Badarawa", "Gabasawa", "Gaji", "Hayin Banki", "Kabala Costain/ Doki", "Kawo", "Maiburji", "Shaba", "Unguwan Dosa", "Unguwan Liman", "Unguwan Sarki", "Unguwan Shanu" ]
+                "wards": [
+                    "Badarawa",
+                    "Gabasawa",
+                    "Gaji",
+                    "Hayin Banki",
+                    "Kabala Costain and Doki",
+                    "Kawo",
+                    "Maiburji",
+                    "Shaba",
+                    "Unguwan Dosa",
+                    "Unguwan Liman",
+                    "Unguwan Sarki",
+                    "Unguwan Shanu"
+                ]
             },
             {
                 "name": "Kaduna South",
-                "wards": [ "Badiko", "Barnawa", "Kakuri Gwari", "Kakuri Hausa", "Makera", "Sabon Gari North", "Sabon Gari South", "Television", "Tudun Nuwapa", "Tudun Wada North (Kaduna South)", "Tudun Wada South (Kaduna South)", "Tudun Wada West (Kaduna South)", "Ung. Sanusi" ]
+                "wards": [
+                    "Badiko",
+                    "Barnawa",
+                    "Kakuri Gwari",
+                    "Kakuri Hausa",
+                    "Makera",
+                    "Sabon Gari North",
+                    "Sabon Gari South",
+                    "Television",
+                    "Tudun Nuwapa",
+                    "Tudun Wada North (Kaduna South)",
+                    "Tudun Wada South (Kaduna South)",
+                    "Tudun Wada West (Kaduna South)",
+                    "Ung. Sanusi"
+                ]
             },
             {
                 "name": "Kagarko",
-                "wards": [ "Aribi", "Iddah", "Jere North", "Jere South", "Kagarko North", "Kagarko South", "Katugal", "Kukui", "Kurmin Jibrin", "Kushe" ]
+                "wards": [
+                    "Aribi",
+                    "Iddah",
+                    "Jere North",
+                    "Jere South",
+                    "Kagarko North",
+                    "Kagarko South",
+                    "Katugal",
+                    "Kukui",
+                    "Kurmin Jibrin",
+                    "Kushe"
+                ]
             },
             {
                 "name": "Kajuru",
-                "wards": [ "Afogo", "Buda", "Idon", "Kajuru", "Kallah", "Kasuwan Magani", "Kufana", "Maro", "Rimau", "Tantatu" ]
+                "wards": [
+                    "Afogo",
+                    "Buda",
+                    "Idon",
+                    "Kajuru",
+                    "Kallah",
+                    "Kasuwan Magani",
+                    "Kufana",
+                    "Maro",
+                    "Rimau",
+                    "Tantatu"
+                ]
             },
             {
                 "name": "Kaura",
-                "wards": [ "Agban", "Bondon", "Fada (Kaura)", "Kadarko", "Kaura (Kaura)", "Kpak", "Kukum", "Mallagum", "Manchok", "Zankan" ]
+                "wards": [
+                    "Agban",
+                    "Bondon",
+                    "Fada (Kaura)",
+                    "Kadarko",
+                    "Kaura (Kaura)",
+                    "Kpak",
+                    "Kukum",
+                    "Mallagum",
+                    "Manchok",
+                    "Zankan"
+                ]
             },
             {
                 "name": "Kauru",
-                "wards": [ "Badurum Sama", "Bital", "Damakasuwa", "Dawaki", "Geshere", "Kamaru", "Kauru East", "Kauru West", "Kwassam", "Makami", "Pari" ]
+                "wards": [
+                    "Badurum Sama",
+                    "Bital",
+                    "Damakasuwa",
+                    "Dawaki",
+                    "Geshere",
+                    "Kamaru",
+                    "Kauru East",
+                    "Kauru West",
+                    "Kwassam",
+                    "Makami",
+                    "Pari"
+                ]
             },
             {
                 "name": "Kubau",
-                "wards": [ "Anchau", "Damau", "Dutsen Wai", "Haskiya", "Kargi", "Karreh", "Kubau", "Mah", "Pambegua", "Zabi (Kubau)", "Zuntu" ]
+                "wards": [
+                    "Anchau",
+                    "Damau",
+                    "Dutsen Wai",
+                    "Haskiya",
+                    "Kargi",
+                    "Karreh",
+                    "Kubau",
+                    "Mah",
+                    "Pambegua",
+                    "Zabi (Kubau)",
+                    "Zuntu"
+                ]
             },
             {
                 "name": "Kudan",
-                "wards": [ "Doka (Kudan)", "Garu (Kudan)", "Hunkuyi", "Kauran Wali North", "Kauran Wali South", "Kudan", "Likoro", "Sabon Gari Hunkuyi", "Taban Sani", "Zabi (Kudan)" ]
+                "wards": [
+                    "Doka (Kudan)",
+                    "Garu (Kudan)",
+                    "Hunkuyi",
+                    "Kauran Wali North",
+                    "Kauran Wali South",
+                    "Kudan",
+                    "Likoro",
+                    "Sabon Gari Hunkuyi",
+                    "Taban Sani",
+                    "Zabi (Kudan)"
+                ]
             },
             {
                 "name": "Lere",
-                "wards": [ "Abadawa", "Dan Alhaji", "Garu (Lere)", "Gure/Kahugu", "Kayarda", "Lazuru", "Lere", "Ramin Kura", "Sabon Birnin", "Saminaka", "Yar Kasuwa" ]
+                "wards": [
+                    "Abadawa",
+                    "Dan Alhaji",
+                    "Garu (Lere)",
+                    "Gure and Kahugu",
+                    "Kayarda",
+                    "Lazuru",
+                    "Lere",
+                    "Ramin Kura",
+                    "Sabon Birnin",
+                    "Saminaka",
+                    "Yar Kasuwa"
+                ]
             },
             {
                 "name": "Makarfi",
-                "wards": [ "Dandamisa", "Danguziri", "Gazara", "Gimi", "Gubuchi", "Gwanki", "Makarfi", "Mayere", "Nassarwan Doya", "Tudun Wada (Makarfi)" ]
+                "wards": [
+                    "Dandamisa",
+                    "Danguziri",
+                    "Gazara",
+                    "Gimi",
+                    "Gubuchi",
+                    "Gwanki",
+                    "Makarfi",
+                    "Mayere",
+                    "Nassarwan Doya",
+                    "Tudun Wada (Makarfi)"
+                ]
             },
             {
                 "name": "Sabon Gari",
-                "wards": [ "Basawa", "Bomo", "Chikaji", "Dogarawa", "Hanwa", "Jama'A", "Jushin Waje", "Muchia", "Samaru", "Unguwan Gabas", "Zabi (Sabon Gari)" ]
+                "wards": [
+                    "Basawa",
+                    "Bomo",
+                    "Chikaji",
+                    "Dogarawa",
+                    "Hanwa",
+                    "Jama'A",
+                    "Jushin Waje",
+                    "Muchia",
+                    "Samaru",
+                    "Unguwan Gabas",
+                    "Zabi (Sabon Gari)"
+                ]
             },
             {
                 "name": "Sanga",
-                "wards": [ "Aboro", "Arak", "Ayu", "Bokana", "Fadan Karshi", "Gwantu", "Nandu", "Ninzam North", "Ninzam South", "Ninzam West", "Wasa Station" ]
+                "wards": [
+                    "Aboro",
+                    "Arak",
+                    "Ayu",
+                    "Bokana",
+                    "Fadan Karshi",
+                    "Gwantu",
+                    "Nandu",
+                    "Ninzam North",
+                    "Ninzam South",
+                    "Ninzam West",
+                    "Wasa Station"
+                ]
             },
             {
                 "name": "Soba",
-                "wards": [ "Dan Wata", "Gamagira", "Garun Gwanki", "Gimba", "Kinkiba", "Kwassallo", "Maigana", "Rahama", "Richifa", "Soba", "Turawa" ]
+                "wards": [
+                    "Dan Wata",
+                    "Gamagira",
+                    "Garun Gwanki",
+                    "Gimba",
+                    "Kinkiba",
+                    "Kwassallo",
+                    "Maigana",
+                    "Rahama",
+                    "Richifa",
+                    "Soba",
+                    "Turawa"
+                ]
             },
             {
                 "name": "Zangon Kataf",
-                "wards": [ "Gidan Jatau", "Gora", "Kamantan", "Kamuru Ikulu North", "Madakiya", "Unguwar Gaiya", "Unguwar Rimi", "Zaman Dabo", "Zango Urban", "Zonkwa", "Zonzon" ]
+                "wards": [
+                    "Gidan Jatau",
+                    "Gora",
+                    "Kamantan",
+                    "Kamuru Ikulu North",
+                    "Madakiya",
+                    "Unguwar Gaiya",
+                    "Unguwar Rimi",
+                    "Zaman Dabo",
+                    "Zango Urban",
+                    "Zonkwa",
+                    "Zonzon"
+                ]
             },
             {
                 "name": "Zaria",
-                "wards": [ "Dambo", "Dutsen Abba", "Gyallesu", "Kaura (Zaria)", "Kufena", "Kwarbai 'A'", "Kwarbai 'B'", "Limancin-Kona", "Tudun Wada (Zaria)", "Tukur Tukur", "Ung. Fatika", "Ung. Juma", "Wucicciri" ]
+                "wards": [
+                    "Dambo",
+                    "Dutsen Abba",
+                    "Gyallesu",
+                    "Kaura (Zaria)",
+                    "Kufena",
+                    "Kwarbai 'A'",
+                    "Kwarbai 'B'",
+                    "Limancin-Kona",
+                    "Tudun Wada (Zaria)",
+                    "Tukur Tukur",
+                    "Ung. Fatika",
+                    "Ung. Juma",
+                    "Wucicciri"
+                ]
             }
         ],
         "stateConstituencies": [
-            {"id" : 1, "name" : "Basawa"},
-            {"id" : 2, "name" : "Chawai/Kauru"},
-            {"id" : 3, "name" : "Chikun"},
-            {"id" : 4, "name" : "Doka/Gabasawa"},
-            {"id" : 5, "name" : "Giwa East"},
-            {"id" : 6, "name" : "Giwa West"},
-            {"id" : 7, "name" : "Igabi East"},
-            {"id" : 8, "name" : "Igabi West"},
-            {"id" : 9, "name" : "Ikara"},
-            {"id" : 10, "name" : "Jaba"},
-            {"id" : 11, "name" : "Jema'a"},
-            {"id" : 12, "name" : "Kachia"},
-            {"id" : 13, "name" : "Kagarko"},
-            {"id" : 14, "name" : "Kajuru"},
-            {"id" : 15, "name" : "Kakangi"},
-            {"id" : 16, "name" : "Kaura"},
-            {"id" : 17, "name" : "Kawo"},
-            {"id" : 18, "name" : "Kewaye"},
-            {"id" : 19, "name" : "Kubau"},
-            {"id" : 20, "name" : "Kudan"},
-            {"id" : 21, "name" : "Lere East"},
-            {"id" : 22, "name" : "Lere West"},
-            {"id" : 23, "name" : "Magajin Gari"},
-            {"id" : 24, "name" : "Maigana"},
-            {"id" : 25, "name" : "Makarfi"},
-            {"id" : 26, "name" : "Makera"},
-            {"id" : 27, "name" : "Sabon Gari"},
-            {"id" : 28, "name" : "Sanga"},
-            {"id" : 29, "name" : "Soba"},
-            {"id" : 30, "name" : "Tudun Wada"},
-            {"id" : 31, "name" : "Ungwan Sanusi"},
-            {"id" : 32, "name" : "Zangon Kataf"},
-            {"id" : 33, "name" : "Zaria City"},
-            {"id" : 34, "name" : "Zonkwa"}
+            {
+                "id": 1,
+                "name": "Basawa"
+            },
+            {
+                "id": 2,
+                "name": "Chawai and Kauru"
+            },
+            {
+                "id": 3,
+                "name": "Chikun"
+            },
+            {
+                "id": 4,
+                "name": "Doka and Gabasawa"
+            },
+            {
+                "id": 5,
+                "name": "Giwa East"
+            },
+            {
+                "id": 6,
+                "name": "Giwa West"
+            },
+            {
+                "id": 7,
+                "name": "Igabi East"
+            },
+            {
+                "id": 8,
+                "name": "Igabi West"
+            },
+            {
+                "id": 9,
+                "name": "Ikara"
+            },
+            {
+                "id": 10,
+                "name": "Jaba"
+            },
+            {
+                "id": 11,
+                "name": "Jema'a"
+            },
+            {
+                "id": 12,
+                "name": "Kachia"
+            },
+            {
+                "id": 13,
+                "name": "Kagarko"
+            },
+            {
+                "id": 14,
+                "name": "Kajuru"
+            },
+            {
+                "id": 15,
+                "name": "Kakangi"
+            },
+            {
+                "id": 16,
+                "name": "Kaura"
+            },
+            {
+                "id": 17,
+                "name": "Kawo"
+            },
+            {
+                "id": 18,
+                "name": "Kewaye"
+            },
+            {
+                "id": 19,
+                "name": "Kubau"
+            },
+            {
+                "id": 20,
+                "name": "Kudan"
+            },
+            {
+                "id": 21,
+                "name": "Lere East"
+            },
+            {
+                "id": 22,
+                "name": "Lere West"
+            },
+            {
+                "id": 23,
+                "name": "Magajin Gari"
+            },
+            {
+                "id": 24,
+                "name": "Maigana"
+            },
+            {
+                "id": 25,
+                "name": "Makarfi"
+            },
+            {
+                "id": 26,
+                "name": "Makera"
+            },
+            {
+                "id": 27,
+                "name": "Sabon Gari"
+            },
+            {
+                "id": 28,
+                "name": "Sanga"
+            },
+            {
+                "id": 29,
+                "name": "Soba"
+            },
+            {
+                "id": 30,
+                "name": "Tudun Wada"
+            },
+            {
+                "id": 31,
+                "name": "Ungwan Sanusi"
+            },
+            {
+                "id": 32,
+                "name": "Zangon Kataf"
+            },
+            {
+                "id": 33,
+                "name": "Zaria City"
+            },
+            {
+                "id": 34,
+                "name": "Zonkwa"
+            }
         ],
         "federalConstituencies": [
-            {"id" : 1, "name" : "Birnin Gwari/Giwa"},
-            {"id" : 2, "name" : "Chikun/Kajuru"},
-            {"id" : 3, "name" : "Igabi"},
-            {"id" : 4, "name" : "Ikara/Kubau"},
-            {"id" : 5, "name" : "Jema'a/Sanga"},
-            {"id" : 6, "name" : "Kachia/Kagarko"},
-            {"id" : 7, "name" : "Kaduna North"},
-            {"id" : 8, "name" : "Kaduna South"},
-            {"id" : 9, "name" : "Kaura"},
-            {"id" : 10, "name" : "Kauru"},
-            {"id" : 11, "name" : "Lere"},
-            {"id" : 12, "name" : "Makarfi/Kudan"},
-            {"id" : 13, "name" : "Sabon Gari"},
-            {"id" : 14, "name" : "Soba"},
-            {"id" : 15, "name" : "Zangon Kataf/Jaba"},
-            {"id" : 16, "name" : "Zaria"}
+            {
+                "id": 1,
+                "name": "Birnin Gwari and Giwa"
+            },
+            {
+                "id": 2,
+                "name": "Chikun and Kajuru"
+            },
+            {
+                "id": 3,
+                "name": "Igabi"
+            },
+            {
+                "id": 4,
+                "name": "Ikara and Kubau"
+            },
+            {
+                "id": 5,
+                "name": "Jema'a and Sanga"
+            },
+            {
+                "id": 6,
+                "name": "Kachia and Kagarko"
+            },
+            {
+                "id": 7,
+                "name": "Kaduna North"
+            },
+            {
+                "id": 8,
+                "name": "Kaduna South"
+            },
+            {
+                "id": 9,
+                "name": "Kaura"
+            },
+            {
+                "id": 10,
+                "name": "Kauru"
+            },
+            {
+                "id": 11,
+                "name": "Lere"
+            },
+            {
+                "id": 12,
+                "name": "Makarfi and Kudan"
+            },
+            {
+                "id": 13,
+                "name": "Sabon Gari"
+            },
+            {
+                "id": 14,
+                "name": "Soba"
+            },
+            {
+                "id": 15,
+                "name": "Zangon Kataf and Jaba"
+            },
+            {
+                "id": 16,
+                "name": "Zaria"
+            }
         ],
         "senetorialDistricts": [
             {
-                "id" : 1,
+                "id": 1,
                 "name": "Kaduna North",
-                "lgaComposition": [ "Ikara", "Kubau", "Kudan", "Lere", "Makarfi", "Sabon Gari", "Soba", "Zaria" ]
+                "lgaComposition": [
+                    "Ikara",
+                    "Kubau",
+                    "Kudan",
+                    "Lere",
+                    "Makarfi",
+                    "Sabon Gari",
+                    "Soba",
+                    "Zaria"
+                ]
             },
             {
-                "id" : 2,
+                "id": 2,
                 "name": "Kaduna Central",
-                "lgaComposition": [ "Birnin Gwari", "Chikun", "Giwa", "Igabi", "Kaduna North", "Kaduna South", "Kajuru" ]
+                "lgaComposition": [
+                    "Birnin Gwari",
+                    "Chikun",
+                    "Giwa",
+                    "Igabi",
+                    "Kaduna North",
+                    "Kaduna South",
+                    "Kajuru"
+                ]
             },
             {
-                "id" : 3,
+                "id": 3,
                 "name": "Kaduna South",
-                "lgaComposition": [ "Jaba", "Jema'a", "Kachia", "Kagarko", "Kaura", "Kauru", "Sanga", "Zangon Kataf" ]
+                "lgaComposition": [
+                    "Jaba",
+                    "Jema'a",
+                    "Kachia",
+                    "Kagarko",
+                    "Kaura",
+                    "Kauru",
+                    "Sanga",
+                    "Zangon Kataf"
+                ]
             }
         ]
     },
@@ -1207,5 +1661,5 @@
             "Kwali",
             "Municipal Area Council"
         ]
-    }    
+    }
 ]

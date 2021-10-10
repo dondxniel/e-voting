@@ -11,3 +11,7 @@ export const REGISTER_VOTER = `${backend}/voter/register-voter/`;
 export const FETCH_ELECTION_STATS = `${backend}/election/fetch-election-stats/`;
 export const FETCH_LGA_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/lga-num-of-registered-voters`;
 export const FETCH_WARD_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/ward-num-of-registered-voters`;
+export const FETCH_STATE_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/state-num-of-registered-voters`;
+export const FETCH_HOACONSTITUENCY_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/hoaConstituency-num-of-registered-voters`;
+export const FETCH_SENETORIAL_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/senetorial-num-of-registered-voters`;
+export const FETCH_HOR_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/hor-num-of-registered-voters`;
