@@ -41,15 +41,15 @@ router.post("/vote", async (req, res) => {
                         ]
                     });*/
                     // Getting today's date to make sure that a user doesn't see an election that's not happening today on the list
-                    const dateViewList = new Date();
-                    const yearViewList = dateViewList.getFullYear();
-                    const monthViewList = (dateViewList.getMonth() + 1 < 10) ? `0${dateViewList.getMonth() + 1}` : `${dateViewList.getMonth() + 1}`;
-                    const day = (dateViewList.getDate() < 10) ? `0${dateViewList.getDate()}` : `${dateViewList.getDate()}`;
-                    const todayViewList = `${yearViewList}-${monthViewList}-${dayViewList}`;
+                    var dateViewList = new Date();
+                    var yearViewList = dateViewList.getFullYear();
+                    var monthViewList = (dateViewList.getMonth() + 1 < 10) ? `0${dateViewList.getMonth() + 1}` : `${dateViewList.getMonth() + 1}`;
+                    var dayViewList = (dateViewList.getDate() < 10) ? `0${dateViewList.getDate()}` : `${dateViewList.getDate()}`;
+                    var todayViewList = `${yearViewList}-${monthViewList}-${dayViewList}`;
                     let elections = await Election.find({
                         $and: [
                             {
-                                electionDate: today
+                                electionDate: todayViewList
                             },
                             {
                                 $or: [
@@ -89,11 +89,11 @@ router.post("/vote", async (req, res) => {
                         try {
                             election = elections[text - 1];
                             // Trying to make sure the voter doesn't try to vote on other days asides the election's date.
-                            const date = new Date();
-                            const year = date.getFullYear();
-                            const month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
-                            const day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
-                            const today = `${year}-${month}-${day}`;
+                            var date = new Date();
+                            var year = date.getFullYear();
+                            var month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+                            var day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
+                            var today = `${year}-${month}-${day}`;
                             if (today === election.electionDate) {
                                 response = `${c}Select the party you would like to vote for \n`;
                                 let contestingParties = [];
