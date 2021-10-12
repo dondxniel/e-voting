@@ -28,7 +28,7 @@ router.post("/vote", async (req, res) => {
                 voter = voter[0];
                 try {
                     // Fetching an election that concerns the fetched voter.
-                    let elections = await Election.find({
+                    /*let elections = await Election.find({
                         $or: [
                             { $and: [{ electionType: 'presidential' }, { location: voter.stateOfOrigin }] },
                             { $and: [{ electionType: 'senetorial' }, { location: voter.senetorialDistrict }] },
@@ -39,6 +39,31 @@ router.post("/vote", async (req, res) => {
                             { $and: [{ electionType: 'counsellorship' }, { location: voter.ward }] },
                             { location: 'all' }
                         ]
+                    });*/
+                    // Getting today's date to make sure that a user doesn't see an election that's not happening today on the list
+                    const dateViewList = new Date();
+                    const yearViewList = dateViewList.getFullYear();
+                    const monthViewList = (dateViewList.getMonth() + 1 < 10) ? `0${dateViewList.getMonth() + 1}` : `${dateViewList.getMonth() + 1}`;
+                    const day = (dateViewList.getDate() < 10) ? `0${dateViewList.getDate()}` : `${dateViewList.getDate()}`;
+                    const todayViewList = `${yearViewList}-${monthViewList}-${dayViewList}`;
+                    let elections = await Election.find({
+                        $and: [
+                            {
+                                electionDate: today
+                            },
+                            {
+                                $or: [
+                                    { $and: [{ electionType: 'presidential' }, { location: voter.stateOfOrigin }] },
+                                    { $and: [{ electionType: 'senetorial' }, { location: voter.senetorialDistrict }] },
+                                    { $and: [{ electionType: 'hor' }, { location: voter.horConstituency }] },
+                                    { $and: [{ electionType: 'governorship' }, { location: voter.stateOfOrigin }] },
+                                    { $and: [{ electionType: 'hoa' }, { location: voter.hoaConstituency }] },
+                                    { $and: [{ electionType: 'chairmanship' }, { location: voter.lga }] },
+                                    { $and: [{ electionType: 'counsellorship' }, { location: voter.ward }] },
+                                    { location: 'all' }
+                                ]
+                            }
+                        ]
                     });
                     // Making sure that the user can only vote for elections that are started by his state's admin officer.
                     elections = elections.filter(item => item.admin.state === voter.stateOfOrigin);
@@ -47,7 +72,6 @@ router.post("/vote", async (req, res) => {
                     text = text.map(val => parseInt(val));
                     // Checking the values entered by the user.
                     if (text.length === 1 && (text.includes(null) || text.includes(NaN))) {
-                        // response = `${e}Voter's name: ${voter.firstname} ${voter.lastname}`;
                         if (elections.length > 0) {
                             response = `${c}Select the election you're voting in.\n`;
                             elections.forEach((el, index) => {
@@ -162,34 +186,34 @@ router.post("/vote", async (req, res) => {
     res.end(response);
 })
 // 
-// router.post('/test-vote', async (req, res) => {
-//     let phoneNumber = "09023830868";
-//     try {
-//         let voter = await Voters.find({ phoneNumber: phoneNumber })
-//         voter = voter[0];
-//         try {
-//             let elections = await Election.find({
-//                 $or: [
-//                     { $and: [{ electionType: 'presidential' }, { location: voter.stateOfOrigin }] },
-//                     { $and: [{ electionType: 'senetorial' }, { location: voter.senetorialDistrict }] },
-//                     { $and: [{ electionType: 'hor' }, { location: voter.horConstituency }] },
-//                     { $and: [{ electionType: 'governorship' }, { location: voter.stateOfOrigin }] },
-//                     { $and: [{ electionType: 'hoa' }, { location: voter.hoaConstituency }] },
-//                     { $and: [{ electionType: 'chairmanship' }, { location: voter.lga }] },
-//                     { $and: [{ electionType: 'counsellorship' }, { location: voter.ward }] },
-//                     { location: 'all' }
-//                 ]
-//             });
+router.post('/test-vote', async (req, res) => {
+    let phoneNumber = "09023830868";
+    try {
+        let voter = await Voters.find({ phoneNumber: phoneNumber })
+        voter = voter[0];
+        try {
+            let elections = await Election.find({
+                $or: [
+                    { $and: [{ electionType: 'presidential' }, { location: voter.stateOfOrigin }] },
+                    { $and: [{ electionType: 'senetorial' }, { location: voter.senetorialDistrict }] },
+                    { $and: [{ electionType: 'hor' }, { location: voter.horConstituency }] },
+                    { $and: [{ electionType: 'governorship' }, { location: voter.stateOfOrigin }] },
+                    { $and: [{ electionType: 'hoa' }, { location: voter.hoaConstituency }] },
+                    { $and: [{ electionType: 'chairmanship' }, { location: voter.lga }] },
+                    { $and: [{ electionType: 'counsellorship' }, { location: voter.ward }] },
+                    { location: 'all' }
+                ]
+            });
 
-//             elections = elections.filter(item => item.admin.state === voter.stateOfOrigin);
+            elections = elections.filter(item => item.admin.state === voter.stateOfOrigin);
 
-//             res.json(elections)
-//         } catch (err) {
-//             res.json({ err });
-//         }
-//     } catch (err) {
-//         res.json({ err })
-//     }
-// })
+            res.json(elections)
+        } catch (err) {
+            res.json({ err });
+        }
+    } catch (err) {
+        res.json({ err })
+    }
+})
 
 module.exports = router;
