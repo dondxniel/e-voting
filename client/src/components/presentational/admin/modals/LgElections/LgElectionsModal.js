@@ -105,13 +105,13 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                         }
                     })
                 })
-                maleVotes = 0;
+                // maleVotes = 0;
                 if (totalVotesCast <= 0 || maleVotes <= 0) {
                     maleVotes = 0;
                 } else {
                     maleVotes = (100 * totalVotesCast) / maleVotes;
                 }
-                femaleVotes = 0;
+                // femaleVotes = 0;
                 if (totalVotesCast <= 0 || femaleVotes <= 0) {
                     femaleVotes = 0;
                 } else {
