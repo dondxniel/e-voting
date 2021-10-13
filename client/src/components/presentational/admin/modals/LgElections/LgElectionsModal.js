@@ -84,7 +84,12 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                 // calculating pVotesByParty
                 let pVotesByParty = [];
                 nVotesByParty.forEach(item => {
-                    let percent = (totalVotesCast > 0) ? ((100 * totalVotesCast) / item.num) : 0;
+                    let percent = 0;
+                    if (totalVotesCast <= 0 || item.num <= 0) {
+                        percent = 0;
+                    } else {
+                        percent = (100 * totalVotesCast) / item.num;
+                    }
                     pVotesByParty.push({ party: item.party, percent });
                 })
 
@@ -100,8 +105,18 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                         }
                     })
                 })
-                maleVotes = (totalVotesCast > 0) ? ((100 * totalVotesCast) / maleVotes) : 0;
-                femaleVotes = (totalVotesCast > 0) ? ((100 * totalVotesCast) / femaleVotes) : 0;
+                maleVotes = 0;
+                if (totalVotesCast <= 0 || maleVotes <= 0) {
+                    maleVotes = 0;
+                } else {
+                    maleVotes = (100 * totalVotesCast) / maleVotes;
+                }
+                femaleVotes = 0;
+                if (totalVotesCast <= 0 || femaleVotes <= 0) {
+                    femaleVotes = 0;
+                } else {
+                    femaleVotes = (100 * totalVotesCast) / femaleVotes;
+                }
                 let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                 let tempStats = {

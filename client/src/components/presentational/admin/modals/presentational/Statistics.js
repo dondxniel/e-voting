@@ -21,7 +21,7 @@ const Statistics = ({ stats }) => {
                 title="Percentage of voter turnout."
             >
                 {/* 73.1% */}
-                {stats.pVoterTurnout}
+                {stats.pVoterTurnout}%
             </StatElement>
             <StatElement
                 title="Number of votes cast by political party."

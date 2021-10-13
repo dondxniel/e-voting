@@ -4,13 +4,13 @@ const Schema = mongoose.Schema;
 const ElectionModel = new Schema({
     admin: {
         type: {
-            state: String, 
-            adminType: String, 
+            state: String,
+            adminType: String,
             electionType: String
         },
         required: true
     },
-    electionType : {
+    electionType: {
         type: String,
         required: true
     },
@@ -22,19 +22,21 @@ const ElectionModel = new Schema({
         type: [{
             candidate: String,
             party: {
-                _id: String, 
-                fullname: String, 
+                _id: String,
+                fullname: String,
                 abb: String
             },
             votes: [{
                 firstname: String,//first name
                 lastname: String,//last name
+                gender: String,//gender
+                phoneNumber: String,//phone number
                 dob: String, //date of birth
                 nin: String, //NIN
-                nationality: String, 
+                nationality: String,
                 stateOfOrigin: String,
                 lga: String, //Local government area
-                ward: String, 
+                ward: String,
                 senetorialDistrict: String,
                 hoaConstituency: String, //house of assembly constituency
                 horConstituency: String, //house of representatives constituency
