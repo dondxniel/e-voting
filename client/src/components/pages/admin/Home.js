@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import { io } from 'socket.io-client';// socket.io importation
 import LocalGovtElect from '../../presentational/admin/modals/LgElections/LgElectionsModal';
 import StateElectionsModal from '../../presentational/admin/modals/StateElections/StateElectionsModal';
 import FederalElectionsModal from '../../presentational/admin/modals/FederalElections/FederalElectionsModal';
@@ -16,6 +17,8 @@ import {
     FETCH_HOR_NUM_OF_REGISTERED_VOTERS
 } from '../../../constants/endpoints';
 import Loading from '../../presentational/Loading';
+
+const socket = io('http://localhost:5000');
 
 const Home = () => {
 
@@ -276,9 +279,14 @@ const Home = () => {
     }
 
     useEffect(() => {
-        // lgaNumRegisteredVoters();
         fetchElectionStats();
         fetchLocations();
+        // socket event listener
+        socket.on('vote_cast', payload => {
+            if (payload) {
+                fetchElectionStats();
+            }
+        })
     }, [])
 
     return (

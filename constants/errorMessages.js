@@ -17,7 +17,7 @@ module.exports = {
     CHECK_VOTER_ERROR: "Sorry, an error occured while checking if the number is registered",
     NO_VOTER: "Sorry, but no voter is registered with this phone number.",
     UNKNOWN_INPUT: "Sorry, you have entered an unknown input.",
-    NO_ELECTION: "Sorry, no election relating to your state, local government area, ward, district or constituency is happening today.",
+    NO_ELECTION: "Sorry, no election relating to your state, local government area, ward, district or constituency is happening at the moment.",
     FETCH_ELECTION_ERROR: "Sorry, there was an error in fetching the elections you are supposed to participate in.",
     ERROR_FINDING_ELECTION: "Sorry, there was an error finding the election from the database. Please try again.",
     ADMIN_EXISTS: "Sorry, an admin already exists with this email address.",

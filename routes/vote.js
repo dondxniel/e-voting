@@ -79,7 +79,12 @@ router.post("/vote", async (req, res) => {
                                 response += `${index}. ${toTitleCase(el.electionType)} \n`;
                             })
                         } else {
-                            response = `${e + NO_ELECTION}`
+                            const date = new Date();
+                            const year = date.getFullYear();
+                            const month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+                            const day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
+                            const today = `${year}-${month}-${day}`;
+                            response = `${e + NO_ELECTION + today}`;
                         }
                     } else if (text.length === 1 && !(text.includes(null) || text.includes(NaN))) {
                         // console.log(text)
@@ -151,6 +156,8 @@ router.post("/vote", async (req, res) => {
                                                 resElection.contestingParties = contestingParties;
                                                 resElection.save();
                                                 response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].party.abb} for the ${toTitleCase(resElection.electionType)} elections.`
+                                                // Socket emit that a vote has been cast.
+                                                req.io.emit('vote_cast', true);
                                             }
                                         })
                                     } catch (err) {
@@ -170,13 +177,13 @@ router.post("/vote", async (req, res) => {
                         response = `${e + UNKNOWN_INPUT}`;
                     }
                 } catch (err) {
-                    response = `${e + FETCH_ELECTION_ERROR}. Details: ${err}`
+                    response = `${e + FETCH_ELECTION_ERROR}`
                 }
             } else {
                 response = `${e + NO_VOTER}`;
             }
         } catch (err) {
-            response = `${e + CHECK_VOTER_ERROR}. Details: ${err}`;
+            response = `${e + CHECK_VOTER_ERROR}`;
         }
     } else {
         response = `${e + UNKNOWN_NUMBER_FORMAT_ERROR}`
