@@ -16,9 +16,10 @@ import {
     FETCH_SENETORIAL_NUM_OF_REGISTERED_VOTERS,
     FETCH_HOR_NUM_OF_REGISTERED_VOTERS
 } from '../../../constants/endpoints';
+import { socketUrl } from '../../../constants/socketUrl';
 import Loading from '../../presentational/Loading';
 
-const socket = io('http://localhost:5000');
+const socket = io(socketUrl);
 
 const Home = () => {
 
@@ -285,9 +286,10 @@ const Home = () => {
         socket.on('vote_cast', payload => {
             if (payload) {
                 fetchElectionStats();
+                console.log("Event Reached");
             }
         })
-    }, [])
+    }, [socket])
 
     return (
         <Container className="admin-homepage">
@@ -296,7 +298,7 @@ const Home = () => {
                 :
                 <>
                     {message ?
-                        <div className={`alert ${alert.variant ? 'alert-success' : 'alert-danger'}`}>
+                        <div className={`alert ${message.variant ? 'alert-success' : 'alert-danger'}`}>
                             {message.message}
                         </div>
                         :

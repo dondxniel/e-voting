@@ -11,40 +11,18 @@ const voterRoutes = require("./routes/voter");
 const voteRoutes = require("./routes/vote");
 const numRegVotersRoutes = require("./routes/numRegVoters");
 const path = require("path");
+const { Server } = require("socket.io"); //Socket importation
+const { socketUrl } = require("./constants/socketUrl");
 
 const app = express();
 
-const { createServer } = require("http");
-const server = createServer(app);
-
-// Socket.io importation and inirialization
-// Start
-const { Server } = require("socket.io");
-const io = new Server(server, {
-    cors: {
-        origin: true,
-        methods: ["GET", "POST"]
-    }
-})
-io.on("connection", socket => {
-    console.log("User connected to socket.");
-    socket.on('disconnect', () => {
-        console.log("Socket disconnected.");
-    })
-})
-// End
-
 mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: "http://localhost:3000",//true,
+    useNewUrlParser: socketUrl,//true,
     useUnifiedTopology: true
 })
     .then(() => console.log('Database connected successfully.'))
     .catch(err => console.log(`Database connection error: ${err}`))
 
-app.use((req, res, next) => {
-    req.io = io;
-    next();
-})
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -54,7 +32,6 @@ app.use('/parties', partiesRoutes);
 app.use('/election', electionRoutes);
 app.use('/auth', authRoutes);
 app.use('/voter', voterRoutes);
-app.use('/vote', voteRoutes);
 app.use('/numRegVoters', numRegVotersRoutes);
 
 if (process.env.NODE_ENV === "production") {
@@ -65,6 +42,39 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`)
+const server = app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+})
+
+// io initialization
+const io = new Server(server, {
+    cors: {
+        origin: "http://127.0.0.1:3000",
+        method: ["GET", "POST"]
+    }
+})
+// passing io as a request property to enable it to be used in routes
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+})
+app.use('/vote', voteRoutes);
+
+// listening for the connection event
+io.on("connection", socket => {
+
+    console.log(`Socket connected ${socket.id}`)
+
+    socket.on('join_room', payload => {
+        socket.join(payload);
+    })
+
+    socket.on('message_sent', payload => {
+        socket.to(payload.room).emit('message_recieved', payload)
+        console.log('Emit worked')
+    })
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected from socket.")
+    })
 })
