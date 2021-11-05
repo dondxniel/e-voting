@@ -33,15 +33,18 @@ router.get('/lga-num-of-registered-voters/:state/:lga', auth, (req, res) => {
         })
     }
 })
-router.get('/ward-num-of-registered-voters/:state/:lga', auth, (req, res) => {
-    const { state, lga } = req.params;
+router.get('/ward-num-of-registered-voters/:state/:lga/:ward', auth, (req, res) => {
+    // console.log("Route reached");
+    const { state, lga, ward } = req.params;
     const queryObj = {};
     queryObj["stateOfOrigin"] = state;
     queryObj["lga"] = lga;
+    queryObj["ward"] = ward;
 
     if (state !== "" && lga !== "") {
         Voters.countDocuments({ ...queryObj })
             .then(data => {
+                // console.log(data)
                 res.json({
                     success: true,
                     data: data

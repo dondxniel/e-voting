@@ -1,6 +1,6 @@
 import { Container, Row, Col, Form } from 'react-bootstrap';
 
-const Charimanship = ({ children, data, lgas, setCharimanshipData, selectedLg }) => {
+const Charimanship = ({ children, data, lgas, setChairmanshipData, selectedLg }) => {
 
     return (
         <Container>
@@ -12,7 +12,7 @@ const Charimanship = ({ children, data, lgas, setCharimanshipData, selectedLg })
                         <Form>
                             <Form.Group>
                                 <Form.Label><b>Select Local Government</b></Form.Label>
-                                <select className="form-control" onChange={setCharimanshipData} value={selectedLg}>
+                                <select className="form-control" onChange={setChairmanshipData} value={selectedLg}>
                                     <option>Open this select menu</option>
                                     {lgas.map(item => <option key={item.name} value={item.name}>{item.name}</option>)}
                                 </select>

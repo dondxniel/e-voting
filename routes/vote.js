@@ -154,14 +154,11 @@ router.post("/vote", async (req, res) => {
                                                 } else {
                                                     // resElection = resElection[0];
                                                     resElection.contestingParties = contestingParties;
+                                                    // console.log(resElection);
                                                     resElection.save();
                                                     response = `${e}Congratulations, you just successfully voted ${contestingParties[partyBeingVotedFor].party.abb} for the ${toTitleCase(resElection.electionType)} elections.`
                                                     // Socket emit that a vote has been cast.
-                                                    if (req.io.emit('vote_cast', true)) {
-                                                        console.log("Event sent");
-                                                    } else {
-                                                        console.log("Event not sent")
-                                                    }
+                                                    req.io.emit('vote_cast', resElection);
                                                 }
                                             })
                                         } catch (err) {

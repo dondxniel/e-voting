@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
-import { io } from 'socket.io-client';// socket.io importation
 import LocalGovtElect from '../../presentational/admin/modals/LgElections/LgElectionsModal';
 import StateElectionsModal from '../../presentational/admin/modals/StateElections/StateElectionsModal';
 import FederalElectionsModal from '../../presentational/admin/modals/FederalElections/FederalElectionsModal';
@@ -16,10 +15,8 @@ import {
     FETCH_SENETORIAL_NUM_OF_REGISTERED_VOTERS,
     FETCH_HOR_NUM_OF_REGISTERED_VOTERS
 } from '../../../constants/endpoints';
-import { socketUrl } from '../../../constants/socketUrl';
 import Loading from '../../presentational/Loading';
 
-const socket = io(socketUrl);
 
 const Home = () => {
 
@@ -51,7 +48,6 @@ const Home = () => {
             },
         })
             .then(({ data }) => {
-                setLoading(false);
                 // console.log(data.data.locals)
                 if (data.success === true) {
                     setLocalElectionResults(data.data.locals);
@@ -64,6 +60,7 @@ const Home = () => {
                         message: data.message
                     })
                 }
+                setLoading(false);
                 // console.log(localElectionResults)
             })
             .catch(err => {
@@ -149,6 +146,9 @@ const Home = () => {
     }
 
     const wardNumRegisteredVoters = async (lga, ward) => {
+        console.log(`State: ${cookies['adminState']}`);
+        console.log(`LGA: ${lga}`);
+        console.log(`Ward: ${ward}`);
         try {
             let data = await axios({
                 method: 'GET',
@@ -283,13 +283,8 @@ const Home = () => {
         fetchElectionStats();
         fetchLocations();
         // socket event listener
-        socket.on('vote_cast', payload => {
-            if (payload) {
-                fetchElectionStats();
-                console.log("Event Reached");
-            }
-        })
-    }, [socket])
+
+    }, [])
 
     return (
         <Container className="admin-homepage">

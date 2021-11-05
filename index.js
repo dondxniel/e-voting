@@ -12,12 +12,11 @@ const voteRoutes = require("./routes/vote");
 const numRegVotersRoutes = require("./routes/numRegVoters");
 const path = require("path");
 const { Server } = require("socket.io"); //Socket importation
-const { socketUrl } = require("./constants/socketUrl");
 
 const app = express();
 
 mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: socketUrl,//true,
+    useNewUrlParser: true,//true,
     useUnifiedTopology: true
 })
     .then(() => console.log('Database connected successfully.'))
@@ -49,7 +48,7 @@ const server = app.listen(PORT, () => {
 // io initialization
 const io = new Server(server, {
     cors: {
-        origin: "http://127.0.0.1:3000",
+        origin: "http://localhost:3000",//socketUrl,
         method: ["GET", "POST"]
     }
 })
