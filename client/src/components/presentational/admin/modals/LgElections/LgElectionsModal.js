@@ -1,20 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
 import { Modal, Button, Tabs, Tab, Container, Row } from 'react-bootstrap';
 import { FaPrint } from 'react-icons/fa';
 import Chairmanship from './presentational/Chairmanship';
 import Counsellorship from './presentational/Counsellorship';
 import Statistics from '../presentational/Statistics';
 import { io } from 'socket.io-client';// socket.io importation
-import { FETCH_ELECTION_STATS } from '../../../../../constants/endpoints';
-import axios from 'axios';
+import { URL } from '../../../../../constants/socketUrl';
 
-
-const socket = io("http://localhost:5000");
+const socket = io(URL);
 
 const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoters, wardNumRegisteredVoters }) => {
-
-    const [cookies] = useCookies(["adminToken", "adminType", "electionType", "adminState"]);
 
     const [show, setShow] = useState(false);
     const [chairmanship, setChairmanship] = useState({});
@@ -177,8 +172,8 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
     const setCounselorshipData = async e => {
         if (Object.keys(counsellorship).length !== 0) {
 
-            console.log(`selected LG : ${selectedLg}`);
-            console.log(`selected Ward : ${e.target.value}`);
+            // console.log(`selected LG : ${selectedLg}`);
+            // console.log(`selected Ward : ${e.target.value}`);
 
 
             setStatLoading(true);
@@ -379,12 +374,12 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
             let lga = localStorage.getItem('selectedLg');
             let ward = localStorage.getItem('selectedWard');
 
-            console.log(`selected LG : ${lga}`);
-            console.log(`selected Ward : ${ward}`);
+            // console.log(`selected LG : ${lga}`);
+            // console.log(`selected Ward : ${ward}`);
 
             // getting totalRegVoters
             let totalRegVoters = await wardNumRegisteredVoters(lga, ward);
-            console.log(totalRegVoters) // undefined
+            // console.log(totalRegVoters) // undefined
             if (totalRegVoters.success === true) {
                 totalRegVoters = totalRegVoters.data;
 
@@ -477,10 +472,8 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
     const updateStats = election => {
         // The payload contains an updated version of the election in which a vote was cast.
         if (election.electionType === "chairmanship") {
-            console.log("Chairmanship election updated");
             updateChairmanshipData(election);
         } else if (election.electionType === "counselorship") {
-            console.log("Counsellorship election updated");
             updateCounselorshipData(election);
         }
     }
