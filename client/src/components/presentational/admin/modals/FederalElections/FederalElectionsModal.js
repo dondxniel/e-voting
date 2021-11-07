@@ -5,6 +5,10 @@ import Presedential from './presentational/Presedential';
 import Senetorial from './presentational/Senetorial';
 import HouseOfRepresentative from './presentational/HouseOfRepresentative';
 import Statistics from '../presentational/Statistics';
+import { io } from 'socket.io-client';// socket.io importation
+import { URL } from '../../../../../constants/socketUrl';
+
+const socket = io(URL);
 
 const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegisteredVoters, senetorialNumRegisteredVoters, horNumRegisteredVoters, federalConstituencies }) => {
 
@@ -22,6 +26,41 @@ const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegis
     const [senStatsSet, setSenStatsSet] = useState(false);
     const [horStatsSet, setHorStatsSet] = useState(false);
     const [statLoading, setStatLoading] = useState(false);
+
+    const resetState = () => {
+        setStatLoading(false);
+    }
+
+    const stateSelected = e => {
+        localStorage.setItem('selectedState', e.target.value);
+        setPresidentialData(e);
+    }
+
+    const districtSelected = e => {
+        localStorage.setItem('selectedDistrict', e.target.value);
+        setSenetorialData(e);
+    }
+
+    const constituencySelected = e => {
+        localStorage.setItem('selectedConstituency', e.target.value);
+        setHorData(e);
+    }
+
+    const setData = async () => {
+        // console.log("REsult", result);
+        let pres = result.filter(item => item.electionType === 'presidential');
+        let sen = result.filter(item => item.electionType === 'senetorial');
+        let hor = result.filter(item => item.electionType === 'hor');
+        // console.log("Pres", pres);
+
+        pres = pres.length > 0 ? pres[0] : false;
+        sen = sen.length > 0 ? sen[0] : false;
+        hor = hor.length > 0 ? hor[0] : false;
+
+        await setPresidential(pres);
+        await setSenetorial(sen);
+        await setHor(hor);
+    }
 
     const setPresidentialData = async e => {
         setPresStatsSet(false);
@@ -251,7 +290,7 @@ const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegis
                     let totalVotesCast = 0; // Total number of people that voted.
                     hor.contestingParties.forEach(item => {
                         item.votes.forEach(voter => {
-                            if (voter["federalConstituency"] === selectedConstituency) {
+                            if (voter["horConstituency"] === selectedConstituency) {
                                 ++totalVotesCast;
                             }
                         })
@@ -338,25 +377,335 @@ const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegis
         }
     }
 
-    const setData = async () => {
-        // console.log("REsult", result);
-        let pres = result.filter(item => item.electionType === 'presidential');
-        let sen = result.filter(item => item.electionType === 'senetorial');
-        let hor = result.filter(item => item.electionType === 'hor');
-        // console.log("Pres", pres);
+    const updatePresidentialData = async election => {
+        let selectedState = localStorage.getItem('selectedState');
+        if (selectedState !== "") {
 
-        pres = pres.length > 0 ? pres[0] : false;
-        sen = sen.length > 0 ? sen[0] : false;
-        hor = hor.length > 0 ? hor[0] : false;
+            if (Object.keys(election).length > 0) {
+                // getting totalRegVoters
+                let totalRegVoters = await stateNumRegisteredVoters();
+                if (totalRegVoters.success === true) {
+                    totalRegVoters = totalRegVoters.data;
 
-        setPresidential(pres);
-        setSenetorial(sen);
-        setHor(hor);
+                    totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
+
+                    // calculating totalVotesCast
+                    let totalVotesCast = 0; // Total number of people that voted.
+                    election.contestingParties.forEach(item => {
+                        item.votes.forEach(voter => {
+                            if (voter["stateOfOrigin"] === selectedState) {
+                                ++totalVotesCast;
+                            }
+                        })
+                    })
+
+                    // calculating pVoterTurnout
+                    let pVoterTurnout = 0; // Percentage of voters that came to vote to the people that are eligible to vote.
+                    if (totalVotesCast <= 0 || totalRegVoters <= 0) {
+                        pVoterTurnout = 0;
+                    } else {
+                        pVoterTurnout = (100 * totalVotesCast) / totalRegVoters;
+                    }
+
+                    // calculating nVotesByParty
+                    let nVotesByParty = [];
+                    election.contestingParties.forEach(party => {
+                        let partyName = party.party.abb;
+                        let num = 0;
+                        party.votes.forEach(vote => {
+                            if (vote.stateOfOrigin === selectedState) {
+                                ++num
+                            }
+                        })
+                        nVotesByParty.push({ party: partyName, num });
+                    })
+
+                    // calculating pVotesByParty
+                    let pVotesByParty = [];
+                    nVotesByParty.forEach(item => {
+                        let percent = 0;
+                        if (totalVotesCast <= 0 || item.num <= 0) {
+                            percent = 0;
+                        } else {
+                            percent = (100 * totalVotesCast) / item.num;
+                        }
+                        pVotesByParty.push({ party: item.party, percent });
+                    })
+
+                    // calculating pVotesByGender
+                    // Calculating number of male and female voters
+                    let maleVotes = 0;
+                    let femaleVotes = 0;
+                    election.contestingParties.forEach(item => {
+                        item.votes.forEach(voter => {
+                            if (voter.gender === "Male") {
+                                ++maleVotes;
+                            } else if (voter.gender === "Female") {
+                                ++femaleVotes;
+                            }
+                        })
+                    })
+                    //Calculating male pecentage
+                    if (totalVotesCast <= 0 || maleVotes <= 0) {
+                        maleVotes = 0;
+                    } else {
+                        maleVotes = (100 * totalVotesCast) / maleVotes;
+                    }
+                    //Calculating female pecentage
+                    if (totalVotesCast <= 0 || femaleVotes <= 0) {
+                        femaleVotes = 0;
+                    } else {
+                        femaleVotes = (100 * totalVotesCast) / femaleVotes;
+                    }
+                    let pVotesByGender = { male: maleVotes, female: femaleVotes };
+
+                    let tempStats = {
+                        totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
+                    }
+
+                    setStats(tempStats);
+
+                } else {
+                    alert("Error fetching total registered voters.");
+                }
+            }
+        } else {
+            alert('doesnt update')
+            setStats({
+                totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
+                nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
+            })
+        }
+    }
+
+    const updateSenetorialData = async election => {
+        let selectedDistrict = localStorage.getItem('selectedDistrict');
+        if (selectedDistrict !== "") {
+            if (Object.keys(election).length > 0) {
+                // getting totalRegVoters
+                let totalRegVoters = await senetorialNumRegisteredVoters(selectedDistrict);
+                if (totalRegVoters.success === true) {
+                    totalRegVoters = totalRegVoters.data;
+
+                    totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
+
+                    // calculating totalVotesCast
+                    let totalVotesCast = 0; // Total number of people that voted.
+                    election.contestingParties.forEach(item => {
+                        item.votes.forEach(voter => {
+                            if (voter["senetorialDistrict"] === selectedDistrict) {
+                                ++totalVotesCast;
+                            }
+                        })
+                    })
+
+                    // calculating pVoterTurnout
+                    let pVoterTurnout = 0; // Percentage of voters that came to vote to the people that are eligible to vote.
+                    if (totalVotesCast <= 0 || totalRegVoters <= 0) {
+                        pVoterTurnout = 0;
+                    } else {
+                        pVoterTurnout = (100 * totalVotesCast) / totalRegVoters;
+                    }
+
+                    // calculating nVotesByParty
+                    let nVotesByParty = [];
+                    election.contestingParties.forEach(party => {
+                        let partyName = party.party.abb;
+                        let num = 0;
+                        party.votes.forEach(vote => {
+                            if (vote.senetorialDistrict === selectedDistrict) {
+                                ++num
+                            }
+                        })
+                        nVotesByParty.push({ party: partyName, num });
+                    })
+
+                    // calculating pVotesByParty
+                    let pVotesByParty = [];
+                    nVotesByParty.forEach(item => {
+                        let percent = 0;
+                        if (totalVotesCast <= 0 || item.num <= 0) {
+                            percent = 0;
+                        } else {
+                            percent = (100 * totalVotesCast) / item.num;
+                        }
+                        pVotesByParty.push({ party: item.party, percent });
+                    })
+
+                    // calculating pVotesByGender
+                    // Calculating number of male and female voters
+                    let maleVotes = 0;
+                    let femaleVotes = 0;
+                    election.contestingParties.forEach(item => {
+                        item.votes.forEach(voter => {
+                            if (voter.gender === "Male") {
+                                ++maleVotes;
+                            } else if (voter.gender === "Female") {
+                                ++femaleVotes;
+                            }
+                        })
+                    })
+                    //Calculating male pecentage
+                    if (totalVotesCast <= 0 || maleVotes <= 0) {
+                        maleVotes = 0;
+                    } else {
+                        maleVotes = (100 * totalVotesCast) / maleVotes;
+                    }
+                    //Calculating female pecentage
+                    if (totalVotesCast <= 0 || femaleVotes <= 0) {
+                        femaleVotes = 0;
+                    } else {
+                        femaleVotes = (100 * totalVotesCast) / femaleVotes;
+                    }
+                    let pVotesByGender = { male: maleVotes, female: femaleVotes };
+
+                    let tempStats = {
+                        totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
+                    }
+
+                    setStats(tempStats);
+                } else {
+                    alert("Error fetching total registered voters.");
+                }
+            }
+        } else {
+            setStats({
+                totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
+                nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
+            })
+        }
+    }
+
+    const updateHorData = async election => {
+        // console.log("Function reached.");
+        let selectedConstituency = localStorage.getItem('selectedConstituency');
+        ;
+        if (selectedConstituency !== "") {
+            // console.log('constituency selected');
+            if (Object.keys(election).length > 0) {
+                // console.log('object not empty');
+                // getting totalRegVoters
+                let totalRegVoters = await horNumRegisteredVoters(selectedConstituency);
+                if (totalRegVoters.success === true) {
+                    totalRegVoters = totalRegVoters.data;
+
+                    totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
+
+                    // calculating totalVotesCast
+                    let totalVotesCast = 0; // Total number of people that voted.
+                    election.contestingParties.forEach(item => {
+                        item.votes.forEach(voter => {
+                            if (voter["horConstituency"] === selectedConstituency) {
+                                ++totalVotesCast;
+                            }
+                        })
+                    })
+
+                    // calculating pVoterTurnout
+                    let pVoterTurnout = 0; // Percentage of voters that came to vote to the people that are eligible to vote.
+                    if (totalVotesCast <= 0 || totalRegVoters <= 0) {
+                        pVoterTurnout = 0;
+                    } else {
+                        pVoterTurnout = (100 * totalVotesCast) / totalRegVoters;
+                    }
+
+                    // calculating nVotesByParty
+                    let nVotesByParty = [];
+                    election.contestingParties.forEach(party => {
+                        let partyName = party.party.abb;
+                        let num = 0;
+                        party.votes.forEach(vote => {
+                            if (vote.horConstituency === selectedConstituency) {
+                                ++num
+                            }
+                        })
+                        nVotesByParty.push({ party: partyName, num });
+                    })
+
+                    // calculating pVotesByParty
+                    let pVotesByParty = [];
+                    nVotesByParty.forEach(item => {
+                        let percent = 0;
+                        if (totalVotesCast <= 0 || item.num <= 0) {
+                            percent = 0;
+                        } else {
+                            percent = (100 * totalVotesCast) / item.num;
+                        }
+                        pVotesByParty.push({ party: item.party, percent });
+                    })
+
+                    // calculating pVotesByGender
+                    // Calculating number of male and female voters
+                    let maleVotes = 0;
+                    let femaleVotes = 0;
+                    election.contestingParties.forEach(item => {
+                        item.votes.forEach(voter => {
+                            if (voter.gender === "Male") {
+                                ++maleVotes;
+                            } else if (voter.gender === "Female") {
+                                ++femaleVotes;
+                            }
+                        })
+                    })
+                    //Calculating male pecentage
+                    if (totalVotesCast <= 0 || maleVotes <= 0) {
+                        maleVotes = 0;
+                    } else {
+                        maleVotes = (100 * totalVotesCast) / maleVotes;
+                    }
+                    //Calculating female pecentage
+                    if (totalVotesCast <= 0 || femaleVotes <= 0) {
+                        femaleVotes = 0;
+                    } else {
+                        femaleVotes = (100 * totalVotesCast) / femaleVotes;
+                    }
+                    let pVotesByGender = { male: maleVotes, female: femaleVotes };
+
+                    let tempStats = {
+                        totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
+                    }
+
+                    setStats(tempStats);
+                } else {
+                    alert("Error fetching total registered voters.");
+                }
+            } else {
+                console.log("Election object empty.");
+            }
+        } else {
+            console.log("Selected constituency empty.");
+            setStats({
+                totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
+                nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
+            })
+        }
+    }
+
+    const updateStats = election => {
+        // The payload contains an updated version of the election in which a vote was cast.
+        // console.log("Election updated");
+        if (election.electionType === "presidential") {
+            // console.log("Presidential election updated");
+            updatePresidentialData(election);
+        } else if (election.electionType === "senetorial") {
+            // console.log("Senatorial election updated");
+            updateSenetorialData(election);
+        } else if (election.electionType === "hor") {
+            // console.log("House of reps election updated");
+            updateHorData(election);
+        }
     }
 
     useEffect(() => {
         setData();
-    }, [result])
+
+        socket.on('vote_cast', updateStats);
+
+        return () => {
+            resetState();
+            socket.off('vote_cast', updateStats);
+        }
+    }, [result, socket])
 
     return (
         <>
@@ -383,7 +732,7 @@ const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegis
                                     <Presedential
                                         data={presidential}
                                         state={state}
-                                        setPresidentialData={setPresidentialData}
+                                        setPresidentialData={stateSelected}
                                     >
                                         {presStatsSet ?
                                             <Statistics stats={stats} />
@@ -403,7 +752,7 @@ const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegis
                                         data={senetorial}
                                         state={state}
                                         senetorialDistricts={senetorialDistricts}
-                                        setSenetorialData={setSenetorialData}
+                                        setSenetorialData={districtSelected}
                                     >
                                         {senStatsSet ?
                                             <Statistics stats={stats} />
@@ -423,7 +772,7 @@ const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegis
                                         data={hor}
                                         state={state}
                                         federalConstituencies={federalConstituencies}
-                                        setHorData={setHorData}
+                                        setHorData={constituencySelected}
                                     >
                                         {horStatsSet ?
                                             <Statistics stats={stats} />

@@ -46,223 +46,229 @@ const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegis
         let gov = result.filter(item => item.electionType === 'governorship');
         let hoa = result.filter(item => item.electionType === 'hoa');
 
-        gov = gov.length > 0 ? gov[0] : false;
-        hoa = hoa.length > 0 ? hoa[0] : false;
+        gov = gov.length > 0 ? gov[0] : {};
+        hoa = hoa.length > 0 ? hoa[0] : {};
 
         setGovernorship(gov);
         setHoa(hoa);
     }
 
     const setGovernorshipData = async e => {
-        setGovStatsSet(false);
-        let selectedState = e.target.value;
-        if (selectedState !== "") {
-            if (Object.keys(governorship).length > 0) {
-                setStatLoading(true);
+        if (Object.keys(governorship).length !== 0) {
+            setGovStatsSet(false);
 
-                // getting totalRegVoters
-                let totalRegVoters = await stateNumRegisteredVoters();
-                if (totalRegVoters.success === true) {
-                    totalRegVoters = totalRegVoters.data;
+            let selectedState = e.target.value;
+            if (selectedState !== "") {
+                if (Object.keys(governorship).length > 0) {
+                    setStatLoading(true);
 
-                    totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
+                    // getting totalRegVoters
+                    let totalRegVoters = await stateNumRegisteredVoters();
+                    if (totalRegVoters.success === true) {
+                        totalRegVoters = totalRegVoters.data;
 
-                    // calculating totalVotesCast
-                    let totalVotesCast = 0; // Total number of people that voted.
-                    governorship.contestingParties.forEach(item => {
-                        item.votes.forEach(voter => {
-                            if (voter["stateOfOrigin"] === selectedState) {
-                                ++totalVotesCast;
-                            }
+                        totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
+
+                        // calculating totalVotesCast
+                        let totalVotesCast = 0; // Total number of people that voted.
+                        governorship.contestingParties.forEach(item => {
+                            item.votes.forEach(voter => {
+                                if (voter["stateOfOrigin"] === selectedState) {
+                                    ++totalVotesCast;
+                                }
+                            })
                         })
-                    })
 
-                    // calculating pVoterTurnout
-                    let pVoterTurnout = 0; // Percentage of voters that came to vote to the people that are eligible to vote.
-                    if (totalVotesCast <= 0 || totalRegVoters <= 0) {
-                        pVoterTurnout = 0;
-                    } else {
-                        pVoterTurnout = (100 * totalVotesCast) / totalRegVoters;
-                    }
-
-                    // calculating nVotesByParty
-                    let nVotesByParty = [];
-                    governorship.contestingParties.forEach(party => {
-                        let partyName = party.party.abb;
-                        let num = 0;
-                        party.votes.forEach(vote => {
-                            if (vote.stateOfOrigin === selectedState) {
-                                ++num
-                            }
-                        })
-                        nVotesByParty.push({ party: partyName, num });
-                    })
-
-                    // calculating pVotesByParty
-                    let pVotesByParty = [];
-                    nVotesByParty.forEach(item => {
-                        let percent = 0;
-                        if (totalVotesCast <= 0 || item.num <= 0) {
-                            percent = 0;
+                        // calculating pVoterTurnout
+                        let pVoterTurnout = 0; // Percentage of voters that came to vote to the people that are eligible to vote.
+                        if (totalVotesCast <= 0 || totalRegVoters <= 0) {
+                            pVoterTurnout = 0;
                         } else {
-                            percent = (100 * totalVotesCast) / item.num;
+                            pVoterTurnout = (100 * totalVotesCast) / totalRegVoters;
                         }
-                        pVotesByParty.push({ party: item.party, percent });
-                    })
 
-                    // calculating pVotesByGender
-                    // Calculating number of male and female voters
-                    let maleVotes = 0;
-                    let femaleVotes = 0;
-                    governorship.contestingParties.forEach(item => {
-                        item.votes.forEach(voter => {
-                            if (voter.gender === "Male") {
-                                ++maleVotes;
-                            } else if (voter.gender === "Female") {
-                                ++femaleVotes;
-                            }
+                        // calculating nVotesByParty
+                        let nVotesByParty = [];
+                        governorship.contestingParties.forEach(party => {
+                            let partyName = party.party.abb;
+                            let num = 0;
+                            party.votes.forEach(vote => {
+                                if (vote.stateOfOrigin === selectedState) {
+                                    ++num
+                                }
+                            })
+                            nVotesByParty.push({ party: partyName, num });
                         })
-                    })
-                    //Calculating male pecentage
-                    if (totalVotesCast <= 0 || maleVotes <= 0) {
-                        maleVotes = 0;
+
+                        // calculating pVotesByParty
+                        let pVotesByParty = [];
+                        nVotesByParty.forEach(item => {
+                            let percent = 0;
+                            if (totalVotesCast <= 0 || item.num <= 0) {
+                                percent = 0;
+                            } else {
+                                percent = (100 * totalVotesCast) / item.num;
+                            }
+                            pVotesByParty.push({ party: item.party, percent });
+                        })
+
+                        // calculating pVotesByGender
+                        // Calculating number of male and female voters
+                        let maleVotes = 0;
+                        let femaleVotes = 0;
+                        governorship.contestingParties.forEach(item => {
+                            item.votes.forEach(voter => {
+                                if (voter.gender === "Male") {
+                                    ++maleVotes;
+                                } else if (voter.gender === "Female") {
+                                    ++femaleVotes;
+                                }
+                            })
+                        })
+                        //Calculating male pecentage
+                        if (totalVotesCast <= 0 || maleVotes <= 0) {
+                            maleVotes = 0;
+                        } else {
+                            maleVotes = (100 * totalVotesCast) / maleVotes;
+                        }
+                        //Calculating female pecentage
+                        if (totalVotesCast <= 0 || femaleVotes <= 0) {
+                            femaleVotes = 0;
+                        } else {
+                            femaleVotes = (100 * totalVotesCast) / femaleVotes;
+                        }
+                        let pVotesByGender = { male: maleVotes, female: femaleVotes };
+
+                        let tempStats = {
+                            totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
+                        }
+
+                        setStats(tempStats)
+
+                        setGovStatsSet(true);
+                        setStatLoading(false);
+
                     } else {
-                        maleVotes = (100 * totalVotesCast) / maleVotes;
+                        alert("Error fetching total registered voters.");
                     }
-                    //Calculating female pecentage
-                    if (totalVotesCast <= 0 || femaleVotes <= 0) {
-                        femaleVotes = 0;
-                    } else {
-                        femaleVotes = (100 * totalVotesCast) / femaleVotes;
-                    }
-                    let pVotesByGender = { male: maleVotes, female: femaleVotes };
-
-                    let tempStats = {
-                        totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
-                    }
-
-                    setStats(tempStats)
-
-                    setGovStatsSet(true);
-                    setStatLoading(false);
-
-                } else {
-                    alert("Error fetching total registered voters.");
                 }
+            } else {
+                // alert("Sheeeeeee")
+                setStats({
+                    totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
+                    nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
+                })
             }
-        } else {
-            // alert("Sheeeeeee")
-            setStats({
-                totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
-                nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
-            })
         }
+
     }
 
     const setHoaData = async e => {
-        setHoaStatsSet(false);
-        let selectedStateConstituency = e.target.value;
-        setSelectedHoaConstituency(selectedStateConstituency);
-        if (selectedStateConstituency !== "") {
-            if (Object.keys(hoa).length > 0) {
-                setStatLoading(true);
+        if (Object.keys(hoa).length !== 0) {
+            setHoaStatsSet(false);
+            let selectedStateConstituency = e.target.value;
+            setSelectedHoaConstituency(selectedStateConstituency);
+            if (selectedStateConstituency !== "") {
+                if (Object.keys(hoa).length > 0) {
+                    setStatLoading(true);
 
-                // getting totalRegVoters
-                let totalRegVoters = await hoaConstituencyNumRegisteredVoters(selectedStateConstituency);
-                console.log(totalRegVoters)
-                if (totalRegVoters.success === true) {
-                    totalRegVoters = totalRegVoters.data;
+                    // getting totalRegVoters
+                    let totalRegVoters = await hoaConstituencyNumRegisteredVoters(selectedStateConstituency);
+                    console.log(totalRegVoters)
+                    if (totalRegVoters.success === true) {
+                        totalRegVoters = totalRegVoters.data;
 
-                    totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
+                        totalRegVoters = parseInt(totalRegVoters);// Total number of people eligible to vote
 
-                    // calculating totalVotesCast
-                    let totalVotesCast = 0; // Total number of people that voted.
-                    hoa.contestingParties.forEach(item => {
-                        item.votes.forEach(voter => {
-                            if (voter["hoaConstituency"] === selectedStateConstituency) {
-                                ++totalVotesCast;
-                            }
+                        // calculating totalVotesCast
+                        let totalVotesCast = 0; // Total number of people that voted.
+                        hoa.contestingParties.forEach(item => {
+                            item.votes.forEach(voter => {
+                                if (voter["hoaConstituency"] === selectedStateConstituency) {
+                                    ++totalVotesCast;
+                                }
+                            })
                         })
-                    })
 
-                    // calculating pVoterTurnout
-                    let pVoterTurnout = 0; // Percentage of voters that came to vote to the people that are eligible to vote.
-                    if (totalVotesCast <= 0 || totalRegVoters <= 0) {
-                        pVoterTurnout = 0;
-                    } else {
-                        pVoterTurnout = (100 * totalVotesCast) / totalRegVoters;
-                    }
-
-                    // calculating nVotesByParty
-                    let nVotesByParty = [];
-                    hoa.contestingParties.forEach(party => {
-                        let partyName = party.party.abb;
-                        let num = 0;
-                        party.votes.forEach(vote => {
-                            if (vote.hoaConstituency === selectedStateConstituency) {
-                                ++num
-                            }
-                        })
-                        nVotesByParty.push({ party: partyName, num });
-                    })
-
-                    // calculating pVotesByParty
-                    let pVotesByParty = [];
-                    nVotesByParty.forEach(item => {
-                        let percent = 0;
-                        if (totalVotesCast <= 0 || item.num <= 0) {
-                            percent = 0;
+                        // calculating pVoterTurnout
+                        let pVoterTurnout = 0; // Percentage of voters that came to vote to the people that are eligible to vote.
+                        if (totalVotesCast <= 0 || totalRegVoters <= 0) {
+                            pVoterTurnout = 0;
                         } else {
-                            percent = (100 * totalVotesCast) / item.num;
+                            pVoterTurnout = (100 * totalVotesCast) / totalRegVoters;
                         }
-                        pVotesByParty.push({ party: item.party, percent });
-                    })
 
-                    // calculating pVotesByGender
-                    // Calculating number of male and female voters
-                    let maleVotes = 0;
-                    let femaleVotes = 0;
-                    hoa.contestingParties.forEach(item => {
-                        item.votes.forEach(voter => {
-                            if (voter.gender === "Male") {
-                                ++maleVotes;
-                            } else if (voter.gender === "Female") {
-                                ++femaleVotes;
-                            }
+                        // calculating nVotesByParty
+                        let nVotesByParty = [];
+                        hoa.contestingParties.forEach(party => {
+                            let partyName = party.party.abb;
+                            let num = 0;
+                            party.votes.forEach(vote => {
+                                if (vote.hoaConstituency === selectedStateConstituency) {
+                                    ++num
+                                }
+                            })
+                            nVotesByParty.push({ party: partyName, num });
                         })
-                    })
-                    //Calculating male pecentage
-                    if (totalVotesCast <= 0 || maleVotes <= 0) {
-                        maleVotes = 0;
+
+                        // calculating pVotesByParty
+                        let pVotesByParty = [];
+                        nVotesByParty.forEach(item => {
+                            let percent = 0;
+                            if (totalVotesCast <= 0 || item.num <= 0) {
+                                percent = 0;
+                            } else {
+                                percent = (100 * totalVotesCast) / item.num;
+                            }
+                            pVotesByParty.push({ party: item.party, percent });
+                        })
+
+                        // calculating pVotesByGender
+                        // Calculating number of male and female voters
+                        let maleVotes = 0;
+                        let femaleVotes = 0;
+                        hoa.contestingParties.forEach(item => {
+                            item.votes.forEach(voter => {
+                                if (voter.gender === "Male") {
+                                    ++maleVotes;
+                                } else if (voter.gender === "Female") {
+                                    ++femaleVotes;
+                                }
+                            })
+                        })
+                        //Calculating male pecentage
+                        if (totalVotesCast <= 0 || maleVotes <= 0) {
+                            maleVotes = 0;
+                        } else {
+                            maleVotes = (100 * totalVotesCast) / maleVotes;
+                        }
+                        //Calculating female pecentage
+                        if (totalVotesCast <= 0 || femaleVotes <= 0) {
+                            femaleVotes = 0;
+                        } else {
+                            femaleVotes = (100 * totalVotesCast) / femaleVotes;
+                        }
+                        let pVotesByGender = { male: maleVotes, female: femaleVotes };
+
+                        let tempStats = {
+                            totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
+                        }
+
+                        setStats(tempStats)
+
+                        setHoaStatsSet(true);
+                        setStatLoading(false);
+
                     } else {
-                        maleVotes = (100 * totalVotesCast) / maleVotes;
+                        alert("Error fetching total registered voters.");
                     }
-                    //Calculating female pecentage
-                    if (totalVotesCast <= 0 || femaleVotes <= 0) {
-                        femaleVotes = 0;
-                    } else {
-                        femaleVotes = (100 * totalVotesCast) / femaleVotes;
-                    }
-                    let pVotesByGender = { male: maleVotes, female: femaleVotes };
-
-                    let tempStats = {
-                        totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
-                    }
-
-                    setStats(tempStats)
-
-                    setHoaStatsSet(true);
-                    setStatLoading(false);
-
-                } else {
-                    alert("Error fetching total registered voters.");
                 }
+            } else {
+                setStats({
+                    totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
+                    nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
+                })
             }
-        } else {
-            setStats({
-                totalRegVoters: 0, totalVotesCast: 0, pVoterTurnout: 0,
-                nVotesByParty: [], pVotesByParty: [], pVotesByGender: { male: 0, female: 0 }
-            })
         }
     }
 

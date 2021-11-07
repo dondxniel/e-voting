@@ -28,18 +28,7 @@ router.post("/vote", async (req, res) => {
                     voter = voter[0];
                     try {
                         // Fetching an election that concerns the fetched voter.
-                        /*let elections = await Election.find({
-                            $or: [
-                                { $and: [{ electionType: 'presidential' }, { location: voter.stateOfOrigin }] },
-                                { $and: [{ electionType: 'senetorial' }, { location: voter.senetorialDistrict }] },
-                                { $and: [{ electionType: 'hor' }, { location: voter.horConstituency }] },
-                                { $and: [{ electionType: 'governorship' }, { location: voter.stateOfOrigin }] },
-                                { $and: [{ electionType: 'hoa' }, { location: voter.hoaConstituency }] },
-                                { $and: [{ electionType: 'chairmanship' }, { location: voter.lga }] },
-                                { $and: [{ electionType: 'counsellorship' }, { location: voter.ward }] },
-                                { location: 'all' }
-                            ]
-                        });*/
+
                         // Getting today's date to make sure that a user doesn't see an election that's not happening today on the list
                         var dateViewList = new Date();
                         var yearViewList = dateViewList.getFullYear();
