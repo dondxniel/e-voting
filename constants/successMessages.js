@@ -7,7 +7,7 @@ module.exports = {
     START_ELECTION_SUCCESS: "You have successfully started an election.",
     LOGIN_SUCCESS: "Login successful.",
     REGISTER_VOTER_SUCCESS: "You have been successfully registered as a voter.",
-    FETCH_ELECTIONS_SUCCESS: "Election statistics successfully fetched."
+    FETCH_ELECTIONS_SUCCESS: "Election statistics successfully fetched.",
+    FETCH_HISTORY_SUCCESS: "History successfully fetched."
 }
 
- 

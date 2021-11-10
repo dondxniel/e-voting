@@ -1,5 +1,6 @@
 .admin-homepage{
     min-height: 300px;
+    /* margin-top: 500px; */
 }
 .font-weight-bold{
     font-weight: bold;
@@ -48,4 +49,7 @@
 .disabled-input{
     cursor: not-allowed;
     pointer-events: all;
+}
+.history-list-item {
+    cursor: pointer
 }

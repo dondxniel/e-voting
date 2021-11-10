@@ -184,35 +184,5 @@ router.post("/vote", async (req, res) => {
     res.header("Content-type", "text/plain");
     res.end(response);
 })
-// 
-router.post('/test-vote', async (req, res) => {
-    let phoneNumber = "09023830868";
-    try {
-        let voter = await Voters.find({ phoneNumber: phoneNumber })
-        voter = voter[0];
-        try {
-            let elections = await Election.find({
-                $or: [
-                    { $and: [{ electionType: 'presidential' }, { location: voter.stateOfOrigin }] },
-                    { $and: [{ electionType: 'senetorial' }, { location: voter.senetorialDistrict }] },
-                    { $and: [{ electionType: 'hor' }, { location: voter.horConstituency }] },
-                    { $and: [{ electionType: 'governorship' }, { location: voter.stateOfOrigin }] },
-                    { $and: [{ electionType: 'hoa' }, { location: voter.hoaConstituency }] },
-                    { $and: [{ electionType: 'chairmanship' }, { location: voter.lga }] },
-                    { $and: [{ electionType: 'counsellorship' }, { location: voter.ward }] },
-                    { location: 'all' }
-                ]
-            });
-
-            elections = elections.filter(item => item.admin.state === voter.stateOfOrigin);
-
-            res.json(elections)
-        } catch (err) {
-            res.json({ err });
-        }
-    } catch (err) {
-        res.json({ err })
-    }
-})
 
 module.exports = router;

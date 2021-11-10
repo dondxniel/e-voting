@@ -7,6 +7,7 @@ import AdminHome from './components/pages/admin/Home';
 import StartElection from './components/pages/admin/StartElection';
 import Admins from './components/pages/admin/Admins';
 import ApprovedParties from './components/pages/admin/ApprovedParties';
+import History from './components/pages/admin/History';
 import RegisterAsVoter from './components/pages/RegisterAsVoter';
 import { useSelector } from 'react-redux';
 
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route path="/admin/approved-parties" >
           {adminLoggedIn ? <ApprovedParties /> : <Redirect to="/" />}
+        </Route>
+        <Route path="/admin/history" >
+          {adminLoggedIn ? <History /> : <Redirect to="/" />}
         </Route>
       </Switch>
       <Footer />

@@ -10,6 +10,7 @@ const authRoutes = require("./routes/auth");
 const voterRoutes = require("./routes/voter");
 const voteRoutes = require("./routes/vote");
 const numRegVotersRoutes = require("./routes/numRegVoters");
+const history = require("./routes/history");
 const path = require("path");
 const { Server } = require("socket.io"); //Socket importation
 
@@ -32,6 +33,7 @@ app.use('/election', electionRoutes);
 app.use('/auth', authRoutes);
 app.use('/voter', voterRoutes);
 app.use('/numRegVoters', numRegVotersRoutes);
+app.use('/history', history);
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));

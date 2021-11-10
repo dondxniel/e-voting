@@ -24,6 +24,6 @@ module.exports = {
     JU_ALREADY_EXISTS: "Sorry, an admin already exists with the jurisdiction access level you're trying to give the new admin.",
     INAPPROPRIATE_ELECTION_TIMING: "All previously started elections have to be completely over before a new one can start. Please adjust the date of the new election to be started.",
     FETCH_ELECTION_ERROR: "Sorry, there was an error in fetching the election results.",
-    UNKNOWN_NUMBER_FORMAT_ERROR: "Sorry, this phone number is not a recognized Nigerian phone number."
-
+    UNKNOWN_NUMBER_FORMAT_ERROR: "Sorry, this phone number is not a recognized Nigerian phone number.",
+    FETCH_HISTORY_ERROR: "Sorry, there was an error fetching the election history."
 }

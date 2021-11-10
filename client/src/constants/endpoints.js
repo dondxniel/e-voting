@@ -15,3 +15,4 @@ export const FETCH_STATE_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/sta
 export const FETCH_HOACONSTITUENCY_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/hoaConstituency-num-of-registered-voters`;
 export const FETCH_SENETORIAL_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/senetorial-num-of-registered-voters`;
 export const FETCH_HOR_NUM_OF_REGISTERED_VOTERS = `${backend}/numRegVoters/hor-num-of-registered-voters`;
+export const FETCH_HISTORY = `${backend}/history/fetch-history`;

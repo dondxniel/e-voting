@@ -10,7 +10,7 @@ import { URL } from '../../../../../constants/socketUrl';
 
 const socket = io(URL);
 
-const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegisteredVoters, senetorialNumRegisteredVoters, horNumRegisteredVoters, federalConstituencies }) => {
+const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumRegisteredVoters, senetorialNumRegisteredVoters, horNumRegisteredVoters, federalConstituencies }) => {
 
     const [show, setShow] = useState(false);
 
@@ -807,4 +807,4 @@ const StateElectionsModal = ({ result, state, senetorialDistricts, stateNumRegis
     )
 }
 
-export default StateElectionsModal
+export default FederalElectionsModal
