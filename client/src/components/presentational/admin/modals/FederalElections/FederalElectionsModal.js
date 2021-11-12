@@ -147,6 +147,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedState,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -252,6 +253,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedDistrict,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -357,6 +359,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedConstituency,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -460,6 +463,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedState,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -560,6 +564,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedDistrict,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -662,6 +667,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedConstituency,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -735,7 +741,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                                         setPresidentialData={stateSelected}
                                     >
                                         {presStatsSet ?
-                                            <Statistics stats={stats} />
+                                            <Statistics election={presidential} stats={stats} />
                                             :
                                             <>
                                                 {statLoading ?
@@ -755,7 +761,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                                         setSenetorialData={districtSelected}
                                     >
                                         {senStatsSet ?
-                                            <Statistics stats={stats} />
+                                            <Statistics election={senetorial} stats={stats} />
                                             :
                                             <>
                                                 {statLoading ?
@@ -775,7 +781,7 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                                         setHorData={constituencySelected}
                                     >
                                         {horStatsSet ?
-                                            <Statistics stats={stats} />
+                                            <Statistics election={hor} stats={stats} />
                                             :
                                             <>
                                                 {statLoading ?
@@ -788,14 +794,6 @@ const FederalElectionsModal = ({ result, state, senetorialDistricts, stateNumReg
                                     </HouseOfRepresentative>
                                 </Tab>
                             </Tabs>
-                        </Row>
-                        <Row className="justify-content-center text-center">
-                            <Button variant="success">
-                                <h1>
-                                    <FaPrint />
-                                </h1>
-                                Print
-                            </Button>
                         </Row>
                     </Container>
                 </Modal.Body>

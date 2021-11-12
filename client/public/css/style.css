@@ -53,3 +53,9 @@
 .history-list-item {
     cursor: pointer
 }
+
+/* Result Sheet */
+
+.result-details-right{
+    border-right: #000
+}

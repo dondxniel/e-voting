@@ -17,7 +17,6 @@ import Statistics from './modals/presentational/Statistics';
 const HistoryListItem = ({
     election,
     electionType,
-    location,
     date,
     state,
     stateNumRegisteredVoters,
@@ -136,6 +135,7 @@ const HistoryListItem = ({
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedState,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -241,6 +241,7 @@ const HistoryListItem = ({
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedConstituency,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -346,6 +347,7 @@ const HistoryListItem = ({
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedDistrict,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -453,6 +455,7 @@ const HistoryListItem = ({
                         let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                         let tempStats = {
+                            location: selectedState,
                             totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                         }
 
@@ -564,6 +567,7 @@ const HistoryListItem = ({
                         let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                         let tempStats = {
+                            location: selectedStateConstituency,
                             totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                         }
 
@@ -670,6 +674,7 @@ const HistoryListItem = ({
                 let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                 let tempStats = {
+                    location: lga,
                     totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                 }
 
@@ -770,6 +775,7 @@ const HistoryListItem = ({
                 let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                 let tempStats = {
+                    location: e.target.value,
                     totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                 }
 
@@ -793,7 +799,7 @@ const HistoryListItem = ({
                     setPresidentialData={setPresidentialData}
                 >
                     {statsSet ?
-                        <Statistics stats={stats} />
+                        <Statistics election={election} stats={stats} />
                         :
                         <>
                             {statLoading ?
@@ -814,7 +820,7 @@ const HistoryListItem = ({
                     setSenetorialData={setSenetorialData}
                 >
                     {statsSet ?
-                        <Statistics stats={stats} />
+                        <Statistics election={election} stats={stats} />
                         :
                         <>
                             {statLoading ?
@@ -835,7 +841,7 @@ const HistoryListItem = ({
                     setHorData={setHorData}
                 >
                     {statsSet ?
-                        <Statistics stats={stats} />
+                        <Statistics election={election} stats={stats} />
                         :
                         <>
                             {statLoading ?
@@ -855,7 +861,7 @@ const HistoryListItem = ({
                     setGovernorshipData={setGovernorshipData}
                 >
                     {statsSet ?
-                        <Statistics stats={stats} />
+                        <Statistics election={election} stats={stats} />
                         :
                         <>
                             {statLoading ?
@@ -877,7 +883,7 @@ const HistoryListItem = ({
                 // selectedHoaConstituency={selectedHoaConstituency}
                 >
                     {statsSet ?
-                        <Statistics stats={stats} />
+                        <Statistics election={election} stats={stats} />
                         :
                         <>
                             {statLoading ?
@@ -898,7 +904,7 @@ const HistoryListItem = ({
                     selectedLg={selectedLg}
                 >
                     {statsSet ?
-                        <Statistics stats={stats} />
+                        <Statistics election={election} stats={stats} />
                         :
                         <>
                             {statLoading ?
@@ -922,7 +928,7 @@ const HistoryListItem = ({
                 // selectedWard={selectedWard}
                 >
                     {statsSet ?
-                        <Statistics stats={stats} />
+                        <Statistics election={election} stats={stats} />
                         :
                         <>
                             {statLoading ?
@@ -993,14 +999,6 @@ const HistoryListItem = ({
                     <Container>
                         <Row>
                             {returnModalDisplay(election.electionType)}
-                        </Row>
-                        <Row className="justify-content-center text-center">
-                            <Button variant="success">
-                                <h2>
-                                    <FaPrint />
-                                </h2>
-                                Print
-                            </Button>
                         </Row>
                     </Container>
                 </Modal.Body>

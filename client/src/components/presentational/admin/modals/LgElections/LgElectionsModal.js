@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Tabs, Tab, Container, Row } from 'react-bootstrap';
-import { FaPrint } from 'react-icons/fa';
 import Chairmanship from './presentational/Chairmanship';
 import Counsellorship from './presentational/Counsellorship';
 import Statistics from '../presentational/Statistics';
@@ -154,6 +153,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                 let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                 let tempStats = {
+                    location: lga,
                     totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                 }
 
@@ -259,6 +259,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                 let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                 let tempStats = {
+                    location: e.target.value,
                     totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                 }
 
@@ -357,6 +358,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                 let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                 let tempStats = {
+                    location: lga,
                     totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                 }
 
@@ -458,6 +460,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                 let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                 let tempStats = {
+                    location: ward,
                     totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                 }
 
@@ -518,7 +521,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                                         selectedLg={selectedLg}
                                     >
                                         {chairmanshipStatsSet ?
-                                            <Statistics stats={stats} />
+                                            <Statistics election={chairmanship} stats={stats} />
                                             :
                                             <>
                                                 {statLoading ?
@@ -541,7 +544,7 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                                         selectedWard={selectedWard}
                                     >
                                         {counselorshipStatsSet ?
-                                            <Statistics stats={stats} />
+                                            <Statistics election={counsellorship} stats={stats} />
                                             :
                                             <>
                                                 {statLoading ?
@@ -554,14 +557,6 @@ const LgElectionsModal = ({ result, lgas, wards, setWards, lgaNumRegisteredVoter
                                     </Counsellorship>
                                 </Tab>
                             </Tabs>
-                        </Row>
-                        <Row className="justify-content-center text-center">
-                            <Button variant="success">
-                                <h1>
-                                    <FaPrint />
-                                </h1>
-                                Print
-                            </Button>
                         </Row>
                     </Container>
                 </Modal.Body>

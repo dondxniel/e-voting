@@ -284,7 +284,7 @@ const History = () => {
                             </Row>
                             :
                             <Row>
-                                {elections.map(item => {
+                                {elections.map((item, index) => {
                                     let electionType = item.electionType;
                                     electionType = electionType === "hor" ? "House of representatives" : electionType;
                                     electionType = electionType === "hoa" ? "House of assembly" : electionType;
@@ -293,9 +293,9 @@ const History = () => {
                                     if (item.admin.electionType === cookies["electionType"] || cookies["adminType"] === "super") {
                                         return (
                                             <HistoryListItem
+                                                key={index}
                                                 election={item}
                                                 electionType={electionType + " elections"}
-                                                location={cookies['adminState'] + " state"}
                                                 date={item.electionDate}
                                                 state={cookies['adminState']}
                                                 stateNumRegisteredVoters={stateNumRegisteredVoters}

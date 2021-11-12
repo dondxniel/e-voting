@@ -140,6 +140,7 @@ const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegis
                         let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                         let tempStats = {
+                            location: selectedState,
                             totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                         }
 
@@ -251,6 +252,7 @@ const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegis
                         let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                         let tempStats = {
+                            location: selectedStateConstituency,
                             totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                         }
 
@@ -356,6 +358,7 @@ const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegis
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedState,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -457,6 +460,7 @@ const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegis
                     let pVotesByGender = { male: maleVotes, female: femaleVotes };
 
                     let tempStats = {
+                        location: selectedStateConstituency,
                         totalRegVoters, totalVotesCast, pVoterTurnout, nVotesByParty, pVotesByParty, pVotesByGender
                     }
 
@@ -527,7 +531,7 @@ const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegis
                                         setGovernorshipData={setSelectedStateFunc}
                                     >
                                         {govStatsSet ?
-                                            <Statistics stats={stats} />
+                                            <Statistics election={governorship} stats={stats} />
                                             :
                                             <>
                                                 {statLoading ?
@@ -548,7 +552,7 @@ const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegis
                                         selectedHoaConstituency={selectedHoaConstituency}
                                     >
                                         {hoaStatsSet ?
-                                            <Statistics stats={stats} />
+                                            <Statistics election={hoa} stats={stats} />
                                             :
                                             <>
                                                 {statLoading ?
@@ -561,14 +565,6 @@ const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegis
                                     </HouseOfAssembly>
                                 </Tab>
                             </Tabs>
-                        </Row>
-                        <Row className="justify-content-center text-center">
-                            <Button variant="success">
-                                <h1>
-                                    <FaPrint />
-                                </h1>
-                                Print
-                            </Button>
                         </Row>
                     </Container>
                 </Modal.Body>
