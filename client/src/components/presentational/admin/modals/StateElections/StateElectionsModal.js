@@ -7,7 +7,8 @@ import Statistics from '../presentational/Statistics';
 import { io } from 'socket.io-client';// socket.io importation
 import { URL } from '../../../../../constants/socketUrl';
 
-const socket = io(URL);
+const socket = io();
+// const socket = io(URL);
 
 const StateElectionsModal = ({ result, state, stateConstituencies, stateNumRegisteredVoters, hoaConstituencyNumRegisteredVoters }) => {
 
