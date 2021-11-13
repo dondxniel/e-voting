@@ -950,6 +950,7 @@ const HistoryListItem = ({
         let day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
         let today = `${year}-${month}-${day}`;
 
+        console.log(`Today: ${today}`)
         console.log(`Election Date: ${passedDate}`)
 
         today = new Date(today);
@@ -957,6 +958,7 @@ const HistoryListItem = ({
         passedDate = `${passedDate[2]}-${passedDate[1]}-${passedDate[0]}`;
         passedDate = new Date(passedDate);
 
+        console.log(`Today: ${today}`)
         console.log(`Election Date: ${passedDate}`)
 
         today = today.getTime();
