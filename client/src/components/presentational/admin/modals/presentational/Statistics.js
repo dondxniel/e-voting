@@ -23,10 +23,33 @@ const Statistics = ({ election, stats }) => {
         declaration: ""
     })
 
+    const [printable, setPrintable] = useState(false);
+
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+
+    const ongoingOrPast = (passedDate) => {
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+        let day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
+        let today = `${year}-${month}-${day}`;
+        today = new Date(today);
+        passedDate = passedDate.split("-");
+        passedDate = `${passedDate[2]}-${passedDate[1]}-${passedDate[0]}`;
+        passedDate = new Date(passedDate);
+
+        today = today.getTime();
+        passedDate = passedDate.getTime();
+
+        if (passedDate < today) {
+            setPrintable(true);
+        }
+
+    }
 
     const setResultSheetData = () => {
         // 1. Election Category
@@ -139,6 +162,7 @@ const Statistics = ({ election, stats }) => {
 
     useEffect(() => {
         setResultSheetData();
+        ongoingOrPast(election.electionDate);
     }, [])
 
     return (
@@ -202,7 +226,8 @@ const Statistics = ({ election, stats }) => {
                             </StatElement>
                         </>
                     }
-                    <Row className="justify-content-center text-center">
+
+                    {printable && <Row className="justify-content-center text-center">
                         <div className="d-none">
                             <div ref={componentRef}>
                                 <ResultSheet resultSheet={resultSheet} />
@@ -218,6 +243,7 @@ const Statistics = ({ election, stats }) => {
                             Print
                         </Button>
                     </Row>
+                    }
                 </>
 
             }

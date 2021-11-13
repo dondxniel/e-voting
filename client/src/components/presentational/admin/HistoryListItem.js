@@ -948,7 +948,8 @@ const HistoryListItem = ({
         let year = date.getFullYear();
         let month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
         let day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
-        let today = `${day}-${month}-${year}`;
+        let today = `${year}-${month}-${day}`;
+
         today = new Date(today);
         passedDate = passedDate.split("-");
         passedDate = `${passedDate[2]}-${passedDate[1]}-${passedDate[0]}`;
