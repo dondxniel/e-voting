@@ -944,33 +944,34 @@ const HistoryListItem = ({
     }
 
     const ongoingOrPast = (passedDate) => {
+
         let date = new Date();
         let year = date.getFullYear();
-        let month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
-        let day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
-        let today = `${year}-${month}-${day}`;
+        let month = date.getMonth();
+        let day = date.getDate();
 
-        console.log(`Today: ${today}`)
-        console.log(`Election Date: ${passedDate}`)
+        console.log(`Current Month : ${month}`);
 
-        today = new Date(today);
+        let today = date.getTime(year, month, day);
+
         passedDate = passedDate.split("-");
-        passedDate = `${passedDate[2]}-${passedDate[1]}-${passedDate[0]}`;
-        passedDate = new Date(passedDate);
+        let passedDateYear = parseInt(passedDate[0]);
+        let passedDateMonth = parseInt(passedDate[1]) - 1;
+        let passedDateDay = parseInt(passedDate[0]);
 
-        console.log(`Today: ${today}`)
-        console.log(`Election Date: ${passedDate}`)
+        console.log(`Election Month : ${passedDateMonth}`)
 
-        today = today.getTime();
+        passedDate = new Date(passedDateYear, passedDateMonth, passedDateDay);
         passedDate = passedDate.getTime();
 
+        console.log(`Passed Date ${passedDate}`);
         console.log(`Today: ${today}`)
-        console.log(`Election Date: ${passedDate}`)
 
+        let diff = passedDate - today;
         let returnValue = "";
-        if (passedDate > today) {
+        if (diff > 0) {
             returnValue = "Upcoming";
-        } else if (passedDate < today) {
+        } else if (diff < 0) {
             returnValue = "Passed";
         } else {
             returnValue = "Ongoing";
