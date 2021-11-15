@@ -968,6 +968,7 @@ const HistoryListItem = ({
         console.log(`Today: ${today}`)
 
         let diff = passedDate - today;
+        console.log(`Difference::${diff}`)
         let returnValue = "";
         if (diff > 0) {
             returnValue = "Upcoming";
