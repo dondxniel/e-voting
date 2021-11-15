@@ -949,6 +949,7 @@ const HistoryListItem = ({
         let month = date.getMonth();
         let day = date.getDate();
 
+        date = new Date(year, month, day);
         let today = date.getTime(year, month, day);
 
         passedDate = passedDate.split("-");
@@ -957,9 +958,13 @@ const HistoryListItem = ({
         let passedDateDay = parseInt(passedDate[2]);
 
         passedDate = new Date(passedDateYear, passedDateMonth, passedDateDay);
-        passedDate = passedDate.getTime();
+        passedDate = passedDate.getTime(passedDateYear, passedDateMonth, passedDateDay);
 
         let diff = passedDate - today;
+        // console.log(`Today: ${date}`)
+        // console.log(`Election Date: ${passedDate}`)
+        // console.log(`Today: ${today}`)
+        // console.log(`Difference: ${diff}`)
 
         let returnValue = "";
         if (diff > 0) {

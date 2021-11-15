@@ -37,6 +37,7 @@ const Statistics = ({ election, stats }) => {
         let month = date.getMonth();
         let day = date.getDate();
 
+        date = new Date(year, month, day);
         let today = date.getTime(year, month, day);
 
         passedDate = passedDate.split("-");
@@ -45,14 +46,9 @@ const Statistics = ({ election, stats }) => {
         let passedDateDay = parseInt(passedDate[2]);
 
         passedDate = new Date(passedDateYear, passedDateMonth, passedDateDay);
-        passedDate = passedDate.getTime();
+        passedDate = passedDate.getTime(passedDateYear, passedDateMonth, passedDateDay);
 
         let diff = passedDate - today;
-
-        console.log(`Election date: ${passedDate}`)
-        console.log(`Today: ${today}`)
-        console.log(`Difference: ${diff}`)
-
         if (diff < 0) {
             setPrintable(true);
         }
