@@ -944,30 +944,23 @@ const HistoryListItem = ({
     }
 
     const ongoingOrPast = (passedDate) => {
-
         let date = new Date();
         let year = date.getFullYear();
         let month = date.getMonth();
         let day = date.getDate();
-
-        console.log(`Passed Date: ${passedDate}`);
-        console.log(`Today: ${date}`);
 
         let today = date.getTime(year, month, day);
 
         passedDate = passedDate.split("-");
         let passedDateYear = parseInt(passedDate[0]);
         let passedDateMonth = parseInt(passedDate[1]) - 1;
-        let passedDateDay = parseInt(passedDate[0]);
+        let passedDateDay = parseInt(passedDate[2]);
 
         passedDate = new Date(passedDateYear, passedDateMonth, passedDateDay);
         passedDate = passedDate.getTime();
 
-        console.log(`Passed Date ${passedDate}`);
-        console.log(`Today: ${today}`)
-
         let diff = passedDate - today;
-        console.log(`Difference::${diff}`)
+
         let returnValue = "";
         if (diff > 0) {
             returnValue = "Upcoming";

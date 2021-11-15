@@ -34,18 +34,26 @@ const Statistics = ({ election, stats }) => {
     const ongoingOrPast = (passedDate) => {
         let date = new Date();
         let year = date.getFullYear();
-        let month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
-        let day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
-        let today = `${year}-${month}-${day}`;
-        today = new Date(today);
-        passedDate = passedDate.split("-");
-        passedDate = `${passedDate[2]}-${passedDate[1]}-${passedDate[0]}`;
-        passedDate = new Date(passedDate);
+        let month = date.getMonth();
+        let day = date.getDate();
 
-        today = today.getTime();
+        let today = date.getTime(year, month, day);
+
+        passedDate = passedDate.split("-");
+        let passedDateYear = parseInt(passedDate[0]);
+        let passedDateMonth = parseInt(passedDate[1]) - 1;
+        let passedDateDay = parseInt(passedDate[2]);
+
+        passedDate = new Date(passedDateYear, passedDateMonth, passedDateDay);
         passedDate = passedDate.getTime();
 
-        if (passedDate < today) {
+        let diff = passedDate - today;
+
+        console.log(`Election date: ${passedDate}`)
+        console.log(`Today: ${today}`)
+        console.log(`Difference: ${diff}`)
+
+        if (diff < 0) {
             setPrintable(true);
         }
 
